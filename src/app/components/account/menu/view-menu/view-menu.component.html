@@ -1,6 +1,8 @@
 <div mat-dialog-header class="mat-dialog-header pos-rel">
     <h1 mat-dialog-title class="align-c">MENU DETAILS</h1>
-    <button mat-icon-button class="pos-abs top-right-0" (click)="dismiss()"><mat-icon class="mdi-18">close</mat-icon></button>
+    <button mat-icon-button class="pos-abs top-right-0" (click)="dismiss()">
+        <mat-icon class="mdi-18">close</mat-icon>
+    </button>
 </div>
 <div mat-dialog-content>
     <div class="fc la-s-str">
@@ -15,7 +17,7 @@
             <div class="icon-space">
                 <mat-icon class="material-icons-outlined mdi-18">menu_book</mat-icon>
             </div>
-            <label>{{ menu.Name }}</label>
+            <label>{{ menu?.Name }}</label>
         </div>
 
 
@@ -28,7 +30,7 @@
             <div class="icon-space">
                 <mat-icon class="material-icons-outlined mdi-18">storefront</mat-icon>
             </div>
-            <label>{{ menu.Stores.Name }}</label>
+            <label>{{ menu?.Stores?.Name }}</label>
         </div>
 
         <div class="fr la-s-s">
@@ -40,7 +42,7 @@
             <div class="icon-space">
                 <mat-icon class="material-icons-outlined mdi-18">short_text</mat-icon>
             </div>
-            <label>{{ menu.Description }}</label>
+            <label>{{ menu?.Description }}</label>
         </div>
 
         <h4 class="m-tb-05">ADVANCE</h4>
@@ -54,7 +56,7 @@
             <div class="icon-space">
                 <mat-icon class="material-icons-outlined mdi-18">visibility</mat-icon>
             </div>
-            <label>{{ menu.IsHideMenu ? 'YES' : 'NO' }}</label>
+            <label>{{ menu?.IsHideMenu ? 'YES' : 'NO' }}</label>
         </div>
 
         <div class="fr la-s-s">
@@ -67,7 +69,7 @@
                 <mat-icon class="material-icons-outlined mdi-18">room_service</mat-icon>
             </div>
             <div class="fr-w la-s-s">
-                <ng-container *ngFor="let service of menu.Services;index as sIndex;">
+                <ng-container *ngFor="let service of menu?.Services;index as sIndex;">
                     <label> {{ service.Name }}{{ menu.Services.length - 1 == sIndex ? "." : ",&nbsp;" }}</label>
                 </ng-container>
             </div>
@@ -82,10 +84,10 @@
             <div class="icon-space">
                 <mat-icon class="material-icons-outlined mdi-18">timer</mat-icon>
             </div>
-            <ng-container *ngIf="menu.Timings?.length; else noTimingCard;">
+            <ng-container *ngIf="menu?.Timings?.length; else noTimingCard;">
                 <table class="table table-striped">
                     <tbody>
-                        <tr *ngFor="let sTiming of menu.Timings; let sIndex = index;">
+                        <tr *ngFor="let sTiming of menu?.Timings; let sIndex = index;">
                             <td>{{ weekDays[sIndex] }}</td>
                             <td>
                                 <ng-container *ngIf="sTiming.IsAllDayOpen;else closedTemplate">
