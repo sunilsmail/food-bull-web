@@ -1,0 +1,129 @@
+<form autocomplete="off" [formGroup]="fg" class="fc la-s-str">
+    <div mat-dialog-header class="mat-dialog-header pos-rel">
+        <h1 mat-dialog-title class="align-c">{{title}}</h1>
+        <button mat-icon-button class="pos-abs top-right-0" (click)="dismiss()">
+    <mat-icon class="mdi-18">close</mat-icon>
+  </button>
+    </div>
+    <div mat-dialog-content>
+
+        <mat-tab-group dynamicHeight animationDuration="0ms" class="c-tabs">
+
+            <mat-tab label="GENERAL">
+
+                <div class="fc la-s-str p-tb-1">
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Category Name</mat-label>
+                        <input [(ngModel)]="category.Name" formControlName="NameCtrl" matInput required>
+                        <mat-error *ngIf="fg.get('NameCtrl')?.hasError('required')">Category name is required</mat-error>
+                        <mat-error *ngIf="fg.get('NameCtrl')?.hasError('minlength')">Min. 3 characters required</mat-error>
+                        <mat-error *ngIf="fg.get('NameCtrl')?.hasError('maxlength')">Max. 200 characters allowed</mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Category Description</mat-label>
+                        <input [(ngModel)]="category.Description" formControlName="DescriptionCtrl" matInput>
+                        <mat-error *ngIf="fg.get('DescriptionCtrl')?.hasError('maxlength')">Max. 200 characters allowed</mat-error>
+                    </mat-form-field>
+
+                </div>
+            </mat-tab>
+
+            <mat-tab label="ADVANCE">
+                <div class="fc la-s-str m-tb-1">
+                    <div class="fr la-sp-btw-c p-tb-1">
+                        <div class="f-85">
+                            <div class="fc la-s-str">
+                                <h4 class="m-tb-02">HIDE CATEGORY</h4>
+                                <small class="note">Enabling this will hide category in your store menu.</small>
+                            </div>
+                        </div>
+                        <div class="f-15 align-r">
+                            <mat-slide-toggle color="primary"></mat-slide-toggle>
+                        </div>
+                    </div>
+                    <mat-divider></mat-divider>
+                    <div class="p-tb-1 fc la-s-str">
+
+                        <mat-form-field class="example-chip-list" appearance="outline">
+                            <mat-label>Assign Add ons</mat-label>
+                            <mat-chip-list #chipList aria-label="addOn">
+                                <mat-chip *ngFor="let addOn of selectedAddOnModels;let i = index;" [selectable]="selectable" [removable]="removable" (removed)="remove(addOn, i)">
+                                    {{addOn.Sources}}
+                                    <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                                </mat-chip>
+                                <input placeholder="Search AddOn..." #addOnInput [(ngModel)]="category.LstAddOns" formControlName="AddOnModelsCtrl" [matAutocomplete]="auto" [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="add($event)">
+                            </mat-chip-list>
+                            <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText" (optionSelected)="selected($event)">
+                                <mat-option *ngFor="let addOn of filteredAddOnModel | async" [value]="addOn">
+                                    {{addOn.Sources}}
+                                </mat-option>
+                            </mat-autocomplete>
+                            <mat-hint>Assign add on will be available for all items under this category</mat-hint>
+                        </mat-form-field>
+                    </div>
+
+                    <mat-divider></mat-divider>
+
+                    <div class="fc la-s-str p-tb-1">
+                        <h4 class="m-tb-02">AVAILABLE SERVICES</h4>
+                        <ul class="plain-ul fr-w la-s-c" formArrayName="servicesArray">
+                            <li *ngFor="let service of servicesFBArray.controls;index as cIndex;" class="p05 f-gt-sm-20 f-lt-md-40">
+                                <mat-checkbox color="primary" [formControlName]="cIndex" [checked]="isServiceSelected(service, cIndex)">
+                                    {{ lstServices[cIndex].Name }}
+                                </mat-checkbox>
+                            </li>
+                        </ul>
+                    </div>
+                    <mat-divider></mat-divider>
+
+                    <div class="fr la-sp-btw-c p-tb-1">
+                        <div class="f-85">
+                            <div class="fc la-s-str">
+                                <h4 class="m-tb-02">AVAILABLE HOURS</h4>
+                                <small class="note">This will override the store general opening times.</small>
+                            </div>
+                        </div>
+                        <div class="f-15 align-r">
+                            <mat-slide-toggle color="primary" [(ngModel)]="category.IsAvailableHrs" formControlName="IsAvailableHrsCtrl"></mat-slide-toggle>
+                        </div>
+                    </div>
+                    <ng-container *ngIf="category.IsAvailableHrs">
+                        <foodbull-week-timings-control [isEdit]="isEdit" (saveChanges)="saveWTCChanges($event)"></foodbull-week-timings-control>
+                    </ng-container>
+                </div>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+    <div mat-dialog-actions>
+        <div class="fr la-s-s">
+            <div class="f-50 p-lr-02">
+                <button type="button" class="w-100" mat-raised-button (click)="dismiss()">CANCEL</button>
+            </div>
+
+            <div class="f-50 p-lr-02">
+                <button *ngIf="!isEdit" type="submit" mat-raised-button color="primary" class="w-100" (click)="submit(fg)">
+    <ng-container [ngSwitch]="isSubmitted">
+      <div *ngSwitchCase="true" class="submitted fr la-c-c">
+        Please wait
+        <div class="loader"></div>
+      </div>
+      <div *ngSwitchDefault>SAVE</div>
+    </ng-container>
+  </button>
+
+                <button *ngIf="isEdit" type="submit" mat-raised-button color="primary" class="w-100" (click)="update(fg)">
+    <ng-container [ngSwitch]="isSubmitted">
+      <div *ngSwitchCase="true" class="submitted fr la-c-c">
+        Please wait
+        <div class="loader"></div>
+      </div>
+      <div *ngSwitchDefault>UPDATE</div>
+    </ng-container>
+  </button>
+            </div>
+
+        </div>
+    </div>
+</form>

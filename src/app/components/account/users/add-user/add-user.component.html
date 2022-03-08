@@ -1,0 +1,123 @@
+<form autocomplete="off" [formGroup]="fg" class="fc la-s-str">
+    <div mat-dialog-header class="mat-dialog-header pos-rel">
+        <h1 mat-dialog-title class="align-c">{{title}}</h1>
+        <button mat-icon-button class="pos-abs top-right-0" (click)="dismiss()">
+  <mat-icon class="mdi-18">close</mat-icon>
+</button>
+    </div>
+    <div mat-dialog-content>
+        <div class="fc la-s-str m-b-1">
+
+            <div class="f-gt-sm-r la-gt-sm-sp-btw-s f-lt-md-c la-lt-md-s-str">
+                <mat-form-field appearance="outline" class="f-gt-sm-45 f-lt-md-100">
+                    <mat-label>First Name</mat-label>
+                    <input [(ngModel)]="user.FirstName" formControlName="FirstNameCtrl" matInput required>
+                    <mat-error *ngIf="fg.get('FirstNameCtrl')?.hasError('required')">First name field is required</mat-error>
+                    <mat-error *ngIf="fg.get('FirstNameCtrl')?.hasError('maxlength')">First name is too long. Max.16 characters are allowed</mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="f-gt-sm-50 f-lt-md-100">
+                    <mat-label>Last Name</mat-label>
+                    <input [(ngModel)]="user.LastName" formControlName="LastNameCtrl" matInput>
+                    <mat-error *ngIf="fg.get('LastNameCtrl')?.hasError('maxlength')">Last name is too long. Max.16 characters are allowed</mat-error>
+                </mat-form-field>
+            </div>
+
+            <ng-container *ngIf="!isEdit">
+                <mat-form-field appearance="outline">
+                    <mat-label>User Name</mat-label>
+                    <input [(ngModel)]="user.UserName" formControlName="UserNameCtrl" matInput required>
+                    <mat-error *ngIf="fg.get('UserNameCtrl')?.hasError('required')">User name is required</mat-error>
+                    <mat-error *ngIf="fg.get('UserNameCtrl')?.hasError('maxlength')">User name is too long. Max.16 characters are allowed</mat-error>
+                </mat-form-field>
+            </ng-container>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Email</mat-label>
+                <input [(ngModel)]="user.Email" formControlName="EmailCtrl" matInput required>
+                <mat-error *ngIf="fg.get('EmailCtrl')?.hasError('required')">Email is required</mat-error>
+                <mat-error *ngIf="fg.get('EmailCtrl')?.hasError('email')">Email is not valid</mat-error>
+            </mat-form-field>
+
+
+            <mat-form-field appearance="outline">
+                <mat-label>Role</mat-label>
+                <mat-select required formControlName="RoleCtrl" [(ngModel)]="user.Role" [compareWith]="objectComparisonFunction">
+                    <mat-option disabled>Role</mat-option>
+                    <mat-option *ngFor="let item of lstRoles;" [value]="item">{{ item.Name }}
+                    </mat-option>
+                </mat-select>
+                <mat-error *ngIf="fg.get('RoleCtrl')?.hasError('required')">Role is required</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Mobile Number</mat-label>
+                <input matInput required [(ngModel)]="user.MobileNumber" formControlName="MobileNumberCtrl">
+                <mat-error *ngIf="fg.get('MobileNumberCtrl')?.hasError('required')">Mobile number is required</mat-error>
+                <mat-error *ngIf="fg.get('MobileNumberCtrl')?.hasError('pattern')">Invalid mobile number</mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="example-chip-list" appearance="outline">
+                <mat-label>Assign Stores</mat-label>
+                <mat-chip-list #chipList aria-label="stores">
+                    <mat-chip *ngFor="let store of selectedStores;let i = index;" [selectable]="selectable" [removable]="removable" (removed)="remove(store, i)">
+                        {{store.Name}}
+                        <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                    </mat-chip>
+                    <input placeholder="store..." #storeInput [(ngModel)]="user.Stores" formControlName="StoreCtrl" [matAutocomplete]="auto" [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="add($event)">
+                </mat-chip-list>
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText" (optionSelected)="selected($event)">
+                    <mat-option *ngFor="let store of filteredStores | async" [value]="store">
+                        {{store.Name}}
+                    </mat-option>
+                </mat-autocomplete>
+                <mat-hint>Please select which stores to assign menu</mat-hint>
+            </mat-form-field>
+
+            <ng-container *ngIf="!isEdit">
+                <div class="fr la-sp-btw-c">
+                    <div class="fc la-s-str f-70">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Password</mat-label>
+
+                            <input matInput [(ngModel)]="user.Password" formControlName="PasswordCtrl" [type]="hide ? 'password' : 'text'">
+                            <button type="button" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide"><mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon></button>
+
+                            <mat-error *ngIf="fg.get('PasswordCtrl')?.hasError('required')">Password is required</mat-error>
+                            <mat-error *ngIf="fg.get('PasswordCtrl')?.hasError('pattern')">Invalid pattern</mat-error>
+                            <mat-error *ngIf="fg.get('PasswordCtrl')?.errors?.serverError">{{fg.get('PasswordCtrl')?.errors?.serverError}}</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="f-25">
+                        <button type="button" mat-raised-button color="primary" (click)="generatePassword()">Generate</button>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+    <div mat-dialog-actions>
+        <div class="fc la-s-str">
+
+            <button *ngIf="!isEdit" type="submit" mat-raised-button color="primary" class="m-lr-05" (click)="submit(fg)">
+  <ng-container [ngSwitch]="isSubmitted">
+    <div *ngSwitchCase="true" class="submitted fr la-c-c">
+      Please wait
+      <div class="loader"></div>
+    </div>
+    <div *ngSwitchDefault>SAVE</div>
+  </ng-container>
+</button>
+
+            <button *ngIf="isEdit" type="submit" mat-raised-button color="primary" class="m-lr-05" (click)="update(fg)">
+  <ng-container [ngSwitch]="isSubmitted">
+    <div *ngSwitchCase="true" class="submitted fr la-c-c">
+      Please wait
+      <div class="loader"></div>
+    </div>
+    <div *ngSwitchDefault>UPDATE</div>
+  </ng-container>
+</button>
+
+        </div>
+    </div>
+</form>

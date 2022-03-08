@@ -1,0 +1,177 @@
+<form autocomplete="off" [formGroup]="fg" class="fc la-s-str" novalidate>
+    <div mat-dialog-header class="mat-dialog-header pos-rel">
+        <h1 mat-dialog-title class="align-c">{{title}}</h1>
+        <button mat-icon-button class="pos-abs top-right-0" (click)="dismiss()">
+  <mat-icon class="mdi-18">close</mat-icon>
+</button>
+    </div>
+    <div mat-dialog-content>
+
+        <mat-tab-group dynamicHeight animationDuration="0ms" class="c-tabs">
+
+            <mat-tab label="GENERAL">
+
+                <div class="fc la-s-str p-tb-1">
+                    <div class="fc la-s-str m-b-1">
+                        <mat-radio-group aria-label="type" formControlName="ItemTypeCtrl" [(ngModel)]="item.ItemType" color="primary" required>
+                            <mat-radio-button *ngFor="let type of lstItemTypes;" [value]="type.Name" class="m-r-1">{{ type.Name }}</mat-radio-button>
+                        </mat-radio-group>
+                        <mat-error *ngIf="fg.get('ItemTypeCtrl')?.hasError('required')">Item type is required</mat-error>
+                    </div>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Item Name</mat-label>
+                        <input [(ngModel)]="item.Name" formControlName="NameCtrl" matInput required>
+                        <mat-error *ngIf="fg.get('NameCtrl')?.hasError('required')">Item name is required</mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Sub Title</mat-label>
+                        <input [(ngModel)]="item.SubTitle" formControlName="SubTitleCtrl" matInput>
+                        <mat-error *ngIf="fg.get('SubTitleCtrl')?.hasError('maxlength')">Max. 100 characters allowed</mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Item Description</mat-label>
+                        <input [(ngModel)]="item.Description" formControlName="DescriptionCtrl" matInput>
+                        <mat-error *ngIf="fg.get('DescriptionCtrl')?.hasError('maxlength')">Max 50 characters are allowed</mat-error>
+                    </mat-form-field>
+
+                    <mat-radio-group [(ngModel)]="item.IsSingle" (ngModelChange)="priceTypeChange($event)" formControlName="PriceTypeCtrl" aria-label="Select price" color="primary" class="m-b-1">
+                        <mat-radio-button [value]="true" selected="selected" class="m-r-1">Regular Price</mat-radio-button>
+                        <mat-radio-button [value]="false">Multiple Price</mat-radio-button>
+                    </mat-radio-group>
+
+                    <ng-container *ngIf="item.IsSingle">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Price</mat-label>
+                            <input [(ngModel)]="item.Price" formControlName="PriceCtrl" matInput required>
+                            <mat-error *ngIf="fg.get('PriceCtrl')?.hasError('required')">Price is required</mat-error>
+                            <mat-error *ngIf="fg.get('PriceCtrl')?.hasError('pattern')">Invalid pattern. eg: 101, 101.22</mat-error>
+                        </mat-form-field>
+                    </ng-container>
+
+                    <ng-container *ngIf="!item.IsSingle">
+                        <div formArrayName="UOMModelsGroup">
+                            <div class="fc la-s-str" *ngFor="let uom of getUOMModelsArray.controls; let uomIndex = index;">
+                                <div [formGroupName]="uomIndex" class="fr la-sp-btw-s">
+                                    <div class="f-10 fc la-c-c p-tb-1">
+                                        <mat-radio-button name="uomIndex" class="example-radio-button" (change)="getRadioChangeEvent(getUOMModelsArray.controls, uomIndex)" [checked]="getRadioValue(getUOMModelsArray.controls[uomIndex])" [value]="getRadioValue(getUOMModelsArray.controls[uomIndex])"
+                                            ngDefaultControl formControlName="IsDefault"></mat-radio-button>
+                                    </div>
+
+                                    <div class="f-40">
+                                        <mat-form-field appearance="outline" class="w-95">
+                                            <mat-label>Name</mat-label>
+                                            <input formControlName="Name" matInput>
+                                            <mat-error *ngIf="getUOMModelsArray.controls[uomIndex].get('Name')?.hasError('required')">Name is required</mat-error>
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div class="f-40">
+                                        <mat-form-field appearance="outline" class="w-95">
+                                            <mat-label>Price</mat-label>
+                                            <input formControlName="Price" matInput>
+                                            <mat-error *ngIf="getUOMModelsArray.controls[uomIndex].get('Price')?.hasError('required')">Price is required</mat-error>
+                                            <mat-error *ngIf="getUOMModelsArray.controls[uomIndex].get('Price')?.hasError('pattern')">Invalid pattern</mat-error>
+                                        </mat-form-field>
+                                    </div>
+
+                                    <button type="button" mat-icon-button (click)="deleteUOM(uomIndex)"><mat-icon class="mdi-18 red p-tb-05">delete</mat-icon></button>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="fc la-s-str m-b-1"><button type="button" (click)="addNewUOM()" mat-stroked-button color="primary"><mat-icon class="mdi-18">add</mat-icon> ADD</button></div>
+                    </ng-container>
+
+                    <foodbull-image-upload [title]="'UPLOAD IMAGES'" [subTitle]="'Image dimension 150 x 150 | Size: 500kb | Format: jpeg and png only)'" [isRequired]="true" [isMultiple]="true" (onSelectionChange)="fileSelectionChange($event)" (delete)="fileDeleteImage($event)"
+                        [images]="item.Images"></foodbull-image-upload>
+
+                </div>
+            </mat-tab>
+
+            <mat-tab label="OPTIONS">
+                <div class="fc la-s-str m-tb-1">
+
+                    <div class="p-tb-1 fc la-s-str">
+
+                        <mat-form-field class="example-chip-list" appearance="outline">
+                            <mat-label>Assign Add ons</mat-label>
+                            <mat-chip-list #chipList aria-label="addOn">
+                                <mat-chip *ngFor="let addOn of selectedAddOnModels;let i = index;" [selectable]="selectable" [removable]="removable" (removed)="remove(addOn, i)">
+                                    {{addOn.Sources}}
+                                    <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                                </mat-chip>
+                                <input placeholder="Search AddOn..." #addOnInput [(ngModel)]="item.LstAddOns" formControlName="AddOnModelsCtrl" [matAutocomplete]="auto" [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="add($event)">
+                            </mat-chip-list>
+                            <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText" (optionSelected)="selected($event)">
+                                <mat-option *ngFor="let addOn of filteredAddOnModel | async" [value]="addOn">
+                                    {{addOn.Sources}}
+                                </mat-option>
+                            </mat-autocomplete>
+                            <mat-hint>Please select which Add ons to assign item</mat-hint>
+                        </mat-form-field>
+                    </div>
+                    <mat-divider></mat-divider>
+                    <div class="fc la-s-str p-tb-1">
+                        <h4 class="m-tb-02">ALLERGENS & TAGS</h4>
+                        <ng-container *ngIf="allergensFBArray.controls.length == 0; else allergensTemplate;">
+                            <small>Allergens & Tags not available.</small>
+                        </ng-container>
+                        <ng-template #allergensTemplate>
+                            <ul class="plain-ul fr-w la-s-c" formArrayName="allergensArray">
+                                <li *ngFor="let service of allergensFBArray.controls;index as cIndex;" class="p05 f-gt-sm-20 f-lt-md-40">
+                                    <mat-checkbox color="primary" [formControlName]="cIndex" [checked]="isAllergensSelected(service, cIndex)">
+                                        {{ lstAllergensServices[cIndex].Name }}
+                                    </mat-checkbox>
+                                </li>
+                            </ul>
+                        </ng-template>
+                    </div>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Display Name</mat-label>
+                        <input [(ngModel)]="item.DisplayName" formControlName="DisplayNameCtrl" matInput>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Print Name</mat-label>
+                        <input [(ngModel)]="item.PrintName" formControlName="PrintNameCtrl" matInput>
+                    </mat-form-field>
+
+                </div>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+    <div mat-dialog-actions>
+        <div class="fr la-s-s">
+            <div class="f-50 p-lr-02">
+                <button type="button" class="w-100" mat-raised-button (click)="dismiss()">CANCEL</button>
+            </div>
+
+            <div class="f-50 p-lr-02">
+                <button *ngIf="!isEdit" type="submit" mat-raised-button color="primary" class="w-100" (click)="submit(fg)">
+    <ng-container [ngSwitch]="isSubmitted">
+      <div *ngSwitchCase="true" class="submitted fr la-c-c">
+        Please wait
+        <div class="loader"></div>
+      </div>
+      <div *ngSwitchDefault>SAVE</div>
+    </ng-container>
+  </button>
+
+                <button *ngIf="isEdit" type="submit" mat-raised-button color="primary" class="w-100" (click)="update(fg)">
+    <ng-container [ngSwitch]="isSubmitted">
+      <div *ngSwitchCase="true" class="submitted fr la-c-c">
+        Please wait
+        <div class="loader"></div>
+      </div>
+      <div *ngSwitchDefault>UPDATE</div>
+    </ng-container>
+  </button>
+            </div>
+
+        </div>
+    </div>
+</form>

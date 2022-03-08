@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="17px" viewBox="0 0 20 17" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>stores</title>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="06_Home" transform="translate(-213.000000, -197.000000)" stroke="#211E1B" stroke-width="1.5">
+            <g id="stores" transform="translate(213.000000, 197.000000)">
+                <polyline id="Line-3" stroke-linecap="square" points="2.13421014 11.2046033 2.13421014 15.902009 17.0736812 15.902009 17.0736812 11.2046033"></polyline>
+                <path d="M15.4868257,0.75 L18.125641,7.78684058 L17.3907862,7.78684058 L17.3907862,8.54909558 L16.909555,8.69633222 L16.483406,7.78684058 L12.0552609,7.78684058 L12.0552609,8.54909558 L11.5740297,8.69633222 L11.1478806,7.78684058 L6.71973551,7.78684058 L6.71973551,8.54909558 L6.2385043,8.69633222 L5.81235524,7.78684058 L2.45131522,7.78684058 L2.45131522,8.54909558 L1.97008401,8.69633222 L1.54393495,7.78684058 L1.082,7.786 L3.72106557,0.75 L15.4868257,0.75 Z" id="Combined-Shape"></path>
+            </g>
+        </g>
+    </g>
+</svg>

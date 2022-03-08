@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="14px" height="14px" viewBox="0 0 14 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>logout</title>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="07_Home-with-Profile-Dropdown" transform="translate(-1190.000000, -160.000000)" fill="#211E1B" fill-rule="nonzero">
+            <g id="dropdown-2" transform="translate(1163.000000, 57.000000)">
+                <g id="logout_black_24dp" transform="translate(27.250000, 103.250000)">
+                    <path d="M10.5,3.75 L9.4425,4.8075 L10.6275,6 L4.5,6 L4.5,7.5 L10.6275,7.5 L9.4425,8.685 L10.5,9.75 L13.5,6.75 L10.5,3.75 Z M1.5,1.5 L6.75,1.5 L6.75,0 L1.5,0 C0.675,0 0,0.675 0,1.5 L0,12 C0,12.825 0.675,13.5 1.5,13.5 L6.75,13.5 L6.75,12 L1.5,12 L1.5,1.5 Z" id="logout"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,66 @@
+<section class="row-gap">
+    <div class="f-gt-sm-r la-gt-sm-sp-btw-c f-lt-md-c la-lt-md-s-str">
+        <h1 class="page-title">{{pageTitle}}</h1>
+
+        <div class="fr la-e-c">
+            <button mat-flat-button type="button" (click)="addMenu()" class="m-lr-05" color="primary" matTooltip="Add Menu" aria-label="Create">
+          <mat-icon>add</mat-icon>
+          <span>Create Menu</span>
+        </button>
+
+            <mat-form-field floatLabel="never" class="search m-lr-1">
+                <input matInput autocomplete="off" [(ngModel)]="search" (keyup)="applyFilter($event.target)" placeholder="search">
+                <button mat-button *ngIf="search" matSuffix mat-icon-button aria-label="Clear" (click)="search=''">
+<mat-icon>close</mat-icon>
+</button>
+            </mat-form-field>
+        </div>
+    </div>
+
+</section>
+
+<section>
+    <div class="mat-card-table">
+
+        <div>
+            <table mat-table matSort [dataSource]="dataSource">
+
+                <!-- MenuName Column -->
+                <ng-container matColumnDef="MenuName">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Menu Name </th>
+                    <td mat-cell *matCellDef="let element">
+                        <span class="line-1"><a class="nlink" [routerLink]="['/account/menu/category', element.Id]">{{element.Name}}</a></span>
+                    </td>
+                </ng-container>
+
+                <!-- AssignedTo Column -->
+                <ng-container matColumnDef="AssignedTo">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Assigned To </th>
+                    <td mat-cell *matCellDef="let element">
+                        <span class="line-1">{{ element.Stores?.Name }}</span>
+                    </td>
+                </ng-container>
+
+                <!-- Actions Column -->
+                <ng-container matColumnDef="Actions">
+                    <th mat-header-cell *matHeaderCellDef class="tw-150 align-c"> Actions </th>
+                    <td mat-cell *matCellDef="let element" class="tw-150 align-r">
+                        <button mat-icon-button aria-label="icon" matTooltip="View" (click)="viewMenu(element)"><mat-icon class="material-icons-outlined grid-action-icons">visibility</mat-icon></button>
+
+                        <button mat-icon-button aria-label="icon" matTooltip="Copy & Create New" (click)="copyMenu(element.Id)"><mat-icon class="material-icons-outlined grid-action-icons">content_copy</mat-icon></button>
+
+                        <button mat-icon-button aria-label="icon" matTooltip="Edit" (click)="editMenu(element)"><mat-icon class="material-icons-outlined grid-action-icons">edit</mat-icon></button>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+            </table>
+
+            <div class="fr la-c-c bg-white">
+                <mat-paginator [pageSize]="20" [pageSizeOptions]="[5, 10, 20, 50, 100, 500]" showFirstLastButtons class="m-auto">
+                </mat-paginator>
+            </div>
+        </div>
+    </div>
+</section>

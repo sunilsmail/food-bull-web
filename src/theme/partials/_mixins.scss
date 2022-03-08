@@ -1,0 +1,240 @@
+@mixin margin($param) {
+    margin: $param !important;
+}
+
+@mixin marginTopBottom($param) {
+    margin-top: $param !important;
+    margin-bottom: $param !important;
+}
+
+@mixin marginLeftRight($param) {
+    margin-left: $param !important;
+    margin-right: $param !important;
+}
+
+@mixin marginBottom($param) {
+    margin-bottom: $param !important;
+}
+
+@mixin marginLeft($param) {
+    margin-left: $param !important;
+}
+
+@mixin marginTop($param) {
+    margin-top: $param !important;
+}
+
+@mixin marginRight($param) {
+    margin-right: $param !important;
+}
+
+@mixin padding($param) {
+    padding: $param !important;
+}
+
+@mixin paddingRight($param) {
+    padding-right: $param !important;
+}
+
+@mixin paddingLeft($param) {
+    padding-left: $param !important;
+}
+
+@mixin paddingLeftRight($param) {
+    padding-left: $param !important;
+    padding-right: $param !important;
+}
+
+@mixin paddingTopBottom($param) {
+    padding-top: $param !important;
+    padding-bottom: $param !important;
+}
+
+@mixin paddingTop($param) {
+    padding-top: $param !important;
+}
+
+@mixin paddingBottom($param) {
+    padding-bottom: $param !important;
+}
+
+@mixin iconDimensions($param) {
+    height: $param !important;
+    width: $param !important;
+    min-width: $param !important;
+    font-size: $param !important;
+    line-height: $param !important;
+}
+
+@mixin zIndex($param) {
+    z-index: $param;
+}
+
+@mixin wrapText($param) {
+    line-height: 1.4;
+    white-space: normal;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: $param;
+}
+
+@mixin transition($tType, $tDur, $tAnim) {
+    -webkit-transition: $tType $tDur $tAnim;
+    -moz-transition: $tType $tDur $tAnim;
+    -ms-transition: $tType $tDur $tAnim;
+    -o-transition: $tType $tDur $tAnim;
+    transition: $tType $tDur $tAnim;
+}
+
+@mixin transition1($P1) {
+    -webkit-transition: $P1;
+    -moz-transition: $P1;
+    -ms-transition: $P1;
+    -o-transition: $P1;
+    transition: $P1;
+}
+
+@mixin transition2($P1, $P2) {
+    -webkit-transition: $P1, $P2;
+    -moz-transition: $P1, $P2;
+    -ms-transition: $P1, $P2;
+    -o-transition: $P1, $P2;
+    transition: $P1, $P2;
+}
+
+@mixin transition3($P1, $P2, $P3) {
+    -webkit-transition: $P1, $P2, $P3;
+    -moz-transition: $P1, $P2, $P3;
+    -ms-transition: $P1, $P2, $P3;
+    -o-transition: $P1, $P2, $P3;
+    transition: $P1, $P2, $P3;
+}
+
+@mixin transform($P1) {
+    -webkit-transform: $P1;
+    -moz-transform: $P1;
+    -ms-transform: $P1;
+    -o-transform: $P1;
+    transform: $P1;
+}
+
+@mixin imageFit($fit, $position, $height, $width) {
+    object-fit: $fit;
+    -o-object-fit: $fit;
+    object-position: $position;
+    -o-object-position: $position;
+    height: $height;
+    width: $width;
+    min-height: $height;
+    min-width: $width;
+}
+
+@mixin animation($P1) {
+    -webkit-animation: $P1;
+    -moz-animation: $P1;
+    animation: $P1;
+}
+
+@mixin appearance($P1) {
+    -webkit-appearance: $P1;
+    -moz-appearance: $P1;
+    -ms-appearance: $P1;
+    -o-appearance: $P1;
+    appearance: $P1;
+}
+
+@mixin transform-origin($P1) {
+    -webkit-transform-origin: $P1;
+    -moz-transform-origin: $P1;
+    -ms-transform-origin: $P1;
+    -o-transform-origin: $P1;
+    transform-origin: $P1;
+}
+
+@mixin widthHeight($width, $height) {
+    width: $width;
+    height: $height;
+}
+
+@mixin containBgImg() {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+@mixin coverBgImg() {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+@mixin flex($flex, $width) {
+    flex: $flex;
+    max-width: $width;
+}
+
+@mixin shadow-type1() {
+    @extend .mat-elevation-z1;
+    transition: background .2s, box-shadow .2s;
+    &:hover {
+        @extend .mat-elevation-z5;
+    }
+}
+
+@mixin shadow-type2() {
+    @extend .mat-elevation-z2;
+    transition: background .2s, box-shadow .2s;
+    &:hover {
+        @extend .mat-elevation-z6;
+    }
+}
+
+@mixin placeholder {
+     ::-webkit-input-placeholder {
+        @content
+    }
+     :-moz-placeholder {
+        @content
+    }
+     ::-moz-placeholder {
+        @content
+    }
+     :-ms-input-placeholder {
+        @content
+    }
+}
+
+@mixin clearFix() {
+    &:before,
+    &:after {
+        content: " ";
+        display: table;
+    }
+    &:after {
+        display: block;
+        clear: both;
+        height: 1px;
+        margin-top: -1px;
+        visibility: hidden;
+    }
+    & {
+        *zoom: 1;
+    }
+}
+
+@mixin keyframes($name) {
+    @-webkit-keyframes #{$name} {
+        @content;
+    }
+    @-moz-keyframes #{$name} {
+        @content;
+    }
+    @-ms-keyframes #{$name} {
+        @content;
+    }
+    @keyframes #{$name} {
+        @content;
+    }
+}

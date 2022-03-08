@@ -1,0 +1,105 @@
+<div class="group-table">
+    <div>
+        <table mat-table #table matSort [dataSource]="dataSource" multiTemplateDataRows>
+            <!-- logo Column -->
+            <ng-container matColumnDef="indicator">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="tw-40"> </th>
+                <td mat-cell *matCellDef="let element" class="tw-40">
+                    <mat-icon *ngIf="element.IsStores">{{expandedElement === element ? 'expand_more' : 'chevron_right'}}</mat-icon>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="Logo">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="tw-100"> Logo </th>
+                <td mat-cell *matCellDef="let element" class="tw-100">
+                    <img [src]="element.Logo ? element.Logo?.ImageUrl : './assets/images/retail-store.png'" alt="img.png" class="grid-logo">
+                </td>
+            </ng-container>
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="Name">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="tw-200"> Store Name </th>
+                <td mat-cell *matCellDef="let element" class="tw-200">
+                    <span class="line-1"><a class="nlink" [routerLink]="['/account/stores/store-group', element.Id]">{{element.Name}}</a></span>
+                </td>
+            </ng-container>
+
+            <!-- AccountNo Column -->
+            <ng-container matColumnDef="AccountNo">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="tw-150"> Account No </th>
+                <td mat-cell *matCellDef="let element" class="tw-150"><span class="line-1">{{element.AccountNo}}</span></td>
+            </ng-container>
+
+            <!-- Location Column -->
+            <ng-container matColumnDef="Address">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Address </th>
+                <td mat-cell *matCellDef="let element"> <span class="line-1">{{element.LocationModel?.Address1}}</span> </td>
+            </ng-container>
+
+            <!-- Phone Column -->
+            <ng-container matColumnDef="Phone">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="tw-150"> Phone </th>
+                <td mat-cell *matCellDef="let element" class="tw-150"> <span class="line-1">{{element.ContactModel?.MobileNumber}}</span></td>
+            </ng-container>
+
+            <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+            <ng-container matColumnDef="expandedDetail">
+                <td class="p0" mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
+                    <div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+
+                        <table class="sub-table" mat-table matSort [dataSource]="getSubDataStore(element.Stores)">
+                            <ng-container matColumnDef="indicator">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header class="tw-40"> </th>
+                                <td mat-cell *matCellDef="let element" class="tw-40"></td>
+                            </ng-container>
+
+                            <!-- logo Column -->
+                            <ng-container matColumnDef="Logo">
+                                <td mat-cell *matCellDef="let element" class="tw-100">
+                                    <img [src]="element.Logo ? element.Logo?.ImageUrl : './assets/images/retail-store.png'" alt="img.png" class="grid-logo">
+                                </td>
+                            </ng-container>
+
+                            <!-- Name Column -->
+                            <ng-container matColumnDef="Name">
+                                <td mat-cell *matCellDef="let element" class="tw-150">
+                                    <span class="line-1">
+                                              <a class="nlink" [routerLink]="['/account/stores/store', element.Id]">{{element.Name}}</a>
+                                            </span>
+                                </td>
+                            </ng-container>
+
+                            <!-- AccountNo Column -->
+                            <ng-container matColumnDef="AccountNo">
+                                <td mat-cell *matCellDef="let element" class="tw-150"><span class="line-1">{{element.AccountNo}}</span></td>
+                            </ng-container>
+
+                            <!-- Location Column -->
+                            <ng-container matColumnDef="Address">
+                                <td mat-cell *matCellDef="let element"><span class="line-1">{{element.LocationModel?.Address1}}</span> </td>
+                            </ng-container>
+
+                            <!-- Phone Column -->
+                            <ng-container matColumnDef="Phone">
+                                <td mat-cell *matCellDef="let element" class="tw-150"><span class="line-1">{{element.ContactModel?.MobileNumber}}</span> </td>
+                            </ng-container>
+
+                            <tr mat-row *matRowDef="let row; columns: displayedColumnsSubStore"></tr>
+                        </table>
+                    </div>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns;"></tr>
+            <tr mat-row *matRowDef="let element; columns: displayedColumns;" class="example-element-row" [class.example-expanded-row]="expandedElement === element" (click)="expandedElement = expandedElement === element ? null : element; getStores(expandedElement, element)">
+            </tr>
+            <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+
+
+        </table>
+        <div class="fr la-c-c bg-white">
+            <mat-paginator [pageSize]="20" [pageSizeOptions]="[5, 10, 20, 50, 100, 500]" showFirstLastButtons class="m-auto">
+            </mat-paginator>
+        </div>
+    </div>
+</div>

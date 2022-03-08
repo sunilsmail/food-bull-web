@@ -1,0 +1,57 @@
+<form autocomplete="off" [formGroup]="fg" class="fc la-s-str">
+    <div class="fc la-s-str">
+
+        <div class="fr la-s-s">
+            <table>
+                <thead>
+                    <tr>
+                        <th class="align-l p-l-05 note">DAY</th>
+                        <th class="align-l p-l-05 note">OPENS AT</th>
+                        <th class="align-l p-l-05 note">CLOSES AT</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <ng-container formArrayName="timingsGroup">
+                    <tr *ngFor="let badge of getTimingArray?.controls;let badgeIndex= index;" [formGroupName]="badgeIndex" class="min-h-50">
+                        <td class="w-200">
+                            <mat-slide-toggle #slideToggle color="primary" formControlName="IsAllDayOpen">{{weekDays[badgeIndex]}}</mat-slide-toggle>
+                        </td>
+                        <ng-container *ngIf="getDurationAccess(slideToggle) == true; else noDurationTemplate;">
+                            <td>
+                                <mat-form-field appearance="outline" class="m-lr-05 max-100">
+                                    <mat-select formControlName="OpenHrs" [compareWith]="objectComparisonFunction">
+                                        <!-- <mat-option value="24 Hours">24 Hours</mat-option>
+                              <mat-divider></mat-divider> -->
+                                        <mat-option *ngFor="let item of lstTime;" [value]="item">{{item | date: 'HH:mm'}}
+                                        </mat-option>
+                                    </mat-select>
+                                    <!-- <mat-error *ngIf="fg['controls'][badgeIndex].get('OpenHrs')?.hasError('required')">
+                                  This is required
+                              </mat-error> -->
+                                </mat-form-field>
+                            </td>
+                            <td>
+
+                                <mat-form-field appearance="outline" class="m-lr-05 max-100">
+                                    <mat-select formControlName="CloseHrs" [compareWith]="objectComparisonFunction">
+                                        <mat-option *ngFor="let item of lstTime" [value]="item">{{item | date: 'HH:mm'}}
+                                        </mat-option>
+                                    </mat-select>
+                                    <!-- <mat-error *ngIf="fg['controls'][badgeIndex].get('CloseHrs')?.hasError('required')">
+                                  This is required
+                              </mat-error> -->
+                                </mat-form-field>
+                            </td>
+                            <td class="min-100">
+                                <label *ngIf="isNextDay(getTimingArray.controls[badgeIndex])" class="stroke-label-success">+1 Day</label>
+                            </td>
+                        </ng-container>
+                        <ng-template #noDurationTemplate>
+                            <td colspan="3">Closed</td>
+                        </ng-template>
+                    </tr>
+                </ng-container>
+            </table>
+        </div>
+    </div>
+</form>

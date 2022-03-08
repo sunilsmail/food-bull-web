@@ -1,0 +1,44 @@
+<form autocomplete="off" [formGroup]="fg" class="fc la-s-str" novalidate>
+    <div mat-dialog-header class="mat-dialog-header pos-rel">
+        <h1 mat-dialog-title class="align-c">{{title}}</h1>
+        <button mat-icon-button class="pos-abs top-right-0" (click)="dismiss()">
+    <mat-icon class="mdi-18">close</mat-icon>
+  </button>
+    </div>
+    <div mat-dialog-content>
+
+        <div class="fc la-s-str">
+
+            <mat-form-field appearance="outline">
+                <mat-label>Name</mat-label>
+                <input [(ngModel)]="allergen.Name" formControlName="NameCtrl" matInput required>
+                <mat-error *ngIf="fg.get('NameCtrl')?.hasError('required')">Allergen/Tag name is required</mat-error>
+                <mat-error *ngIf="fg.get('NameCtrl')?.hasError('maxlength')">Max. 200 characters allowed</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Description</mat-label>
+                <input [(ngModel)]="allergen.Description" formControlName="DescriptionCtrl" matInput>
+                <mat-error *ngIf="fg.get('DescriptionCtrl')?.hasError('maxlength')">Description is too long. Max.500 characters allowed</mat-error>
+            </mat-form-field>
+        </div>
+    </div>
+
+    <div mat-dialog-actions>
+        <div class="fr la-s-s">
+            <div class="f-50 p-lr-02">
+                <button type="button" class="w-100" mat-raised-button (click)="dismiss()">CANCEL</button>
+            </div>
+
+            <div class="f-50 p-lr-02">
+                <button *ngIf="!isEdit" type="submit" mat-raised-button color="primary" class="w-100" (click)="submit(fg)">
+                  <ng-container [ngSwitch]="isSubmitted"><div *ngSwitchCase="true" class="submitted fr la-c-c">Please wait<div class="loader"></div></div><div *ngSwitchDefault>SAVE</div></ng-container>
+                </button>
+
+                <button *ngIf="isEdit" type="submit" mat-raised-button color="primary" class="w-100" (click)="update(fg)">
+                  <ng-container [ngSwitch]="isSubmitted"><div *ngSwitchCase="true" class="submitted fr la-c-c">Please wait<div class="loader"></div></div><div *ngSwitchDefault>UPDATE</div></ng-container>
+                </button>
+            </div>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,17 @@
+<h4 mat-dialog-title class="m-tb-05 align-c">
+    {{title}}
+</h4>
+
+<div mat-dialog-content class="m-tb-1">
+    <div class="fr la-c-c">
+        <mat-icon class="mdi-32" *ngIf="icon">{{ icon }}</mat-icon>
+        <span>{{ message }}</span>
+    </div>
+</div>
+
+<div mat-dialog-actions>
+    <div class="fr la-sp-btw-c">
+        <button mat-button class="f-45" (click)="onDismiss()">CANCEL</button>
+        <button mat-raised-button color="primary" (click)="onConfirm()" class="f-50">CONFIRM</button>
+    </div>
+</div>

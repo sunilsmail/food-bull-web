@@ -1,0 +1,28 @@
+<div class="fr la-s-s">
+    <button mat-raised-button color="primary" (click)="enableChangeOrder()">Edit Order</button>
+</div>
+
+<table #table mat-table matSort [dataSource]="dataSource" cdkDropList [cdkDropListData]="dataSource" (cdkDropListDropped)="dropTable($event)">
+    <!-- Sources Column -->
+    <ng-container matColumnDef="Sources">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element">
+            <div class="fr la-s-c">
+                <mat-icon *ngIf="isChangeOrderEnabled" matTooltip="Drag to re-arrange order" style="pointer-events: all;" class="mdi-18 m-r-1 grey cursor-grab" cdkDragHandle>drag_indicator</mat-icon>
+                <span class="line-1">{{ element.Sources }}</span>
+            </div>
+        </td>
+    </ng-container>
+
+    <!-- Actions Column -->
+    <ng-container matColumnDef="Actions">
+        <th mat-header-cell *matHeaderCellDef class="tw-150 align-c"></th>
+        <td mat-cell *matCellDef="let element" class="tw-150 align-r">
+            <button mat-icon-button (click)="deleteItem(element)" aria-label="icon" matTooltip="Delete"><mat-icon class="material-icons-outlined grid-action-icons">delete</mat-icon></button>
+            <button mat-icon-button (click)="editItem(element)" aria-label="icon" matTooltip="Edit"><mat-icon class="material-icons-outlined grid-action-icons">edit</mat-icon></button>
+        </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns" cdkDrag [cdkDragData]="row"></tr>
+</table>

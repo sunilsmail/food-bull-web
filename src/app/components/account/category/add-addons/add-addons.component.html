@@ -1,0 +1,156 @@
+<div mat-dialog-header class="mat-dialog-header">
+    <div class="pos-rel">
+        <h1 mat-dialog-title class="align-c">{{title}}</h1>
+        <button mat-icon-button class="pos-abs top-right-0" (click)="dismiss()"><mat-icon class="mdi-18">close</mat-icon></button>
+    </div>
+</div>
+<form autocomplete="off" [formGroup]="fg" class="fc la-s-str" novalidate>
+
+    <div mat-dialog-content>
+
+        <mat-tab-group dynamicHeight animationDuration="0ms" class="c-tabs">
+
+            <mat-tab label="GENERAL">
+
+
+                <div class="fc la-s-str p-tb-1">
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Sources</mat-label>
+                        <input [(ngModel)]="item.Sources" formControlName="SourcesCtrl" matInput required>
+                        <mat-error *ngIf="fg.get('SourcesCtrl')?.hasError('required')">Sources is required</mat-error>
+                        <mat-error *ngIf="fg.get('SourcesCtrl')?.hasError('minlength')">Min. 3 characters required</mat-error>
+                        <mat-error *ngIf="fg.get('SourcesCtrl')?.hasError('maxlength')">Max. 200 characters allowed</mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Display Name</mat-label>
+                        <input [(ngModel)]="item.DisplayName" formControlName="DisplayNameCtrl" matInput>
+                        <mat-error *ngIf="fg.get('DisplayNameCtrl')?.hasError('maxlength')">Max. 200 characters</mat-error>
+                    </mat-form-field>
+
+                    <h4>ADD ONS</h4>
+
+                    <div formArrayName="AddOnItemModelsArray">
+                        <div class="fr la-sp-btw-s p-tb-1">
+                            <div class="f-40"> <label class="note"><b>NAME</b></label> </div>
+                            <div class="f-25"> <label class="note"><b>PRICE</b></label></div>
+                            <div class="f-25 align-c"><label class="note"><b>NO-STOCK</b></label></div>
+                            <div class="f-10"></div>
+                        </div>
+
+                        <div class="fc la-s-str" *ngFor="let uom of getAddOnItemModelsArray.controls; let dyIndex = index;">
+                            <div [formGroupName]="dyIndex" class="fr la-sp-btw-s">
+
+                                <div class="f-40">
+                                    <mat-form-field appearance="outline" class="w-95">
+                                        <mat-label>Name</mat-label>
+                                        <input formControlName="Name" matInput required>
+                                        <mat-error *ngIf="getAddOnItemModelsArray.controls[dyIndex].get('Name')?.hasError('required')">Name is required</mat-error>
+                                    </mat-form-field>
+                                </div>
+
+                                <div class="f-25">
+                                    <mat-form-field appearance="outline" class="w-95">
+                                        <mat-label>Price</mat-label>
+                                        <input formControlName="Price" matInput required>
+                                        <mat-error *ngIf="getAddOnItemModelsArray.controls[dyIndex].get('Price')?.hasError('required')">Price is required</mat-error>
+                                        <mat-error *ngIf="getAddOnItemModelsArray.controls[dyIndex].get('Price')?.hasError('pattern')">Invalid pattern</mat-error>
+                                    </mat-form-field>
+                                </div>
+
+                                <div class="f-25 fc la-c-c p-tb-1">
+                                    <mat-checkbox color="primary" formControlName="IsStock"></mat-checkbox>
+                                </div>
+
+                                <div class="f-10 p-tb-05">
+                                    <button type="button" mat-icon-button (click)="deleteUOM(dyIndex)"><mat-icon class="mdi-18 red">delete</mat-icon></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="button" (click)="addNewUOM()" mat-stroked-button color="primary"><mat-icon class="mdi-18">add</mat-icon> ADD</button>
+
+                </div>
+            </mat-tab>
+
+            <mat-tab label="OPTIONS">
+                <div class="fc la-s-str m-tb-1">
+                    <div class="fr-w la-sp-btw-s">
+
+                        <div class="fr la-sp-btw-c p-tb-1 p-lr-05 f-gt-sm-40 f-lt-md-100">
+                            <div class="f-85">
+                                <div class="fc la-s-str">
+                                    <label class="m-tb-02">Make Required</label>
+                                </div>
+                            </div>
+                            <div class="f-15 align-r">
+                                <mat-slide-toggle color="primary" formControlName="IsMakeRequiredCtrl" [(ngModel)]="item.IsMakeRequired"></mat-slide-toggle>
+                            </div>
+                        </div>
+
+                        <div class="fr la-sp-btw-c p-tb-1 p-lr-05 f-gt-sm-40 f-lt-md-100">
+                            <div class="f-85">
+                                <div class="fc la-s-str">
+                                    <label class="m-tb-02">Select Multiple</label>
+                                </div>
+                            </div>
+                            <div class="f-15 align-r">
+                                <mat-slide-toggle color="primary" formControlName="IsSelectMultipleCtrl" [(ngModel)]="item.IsSelectMultiple"></mat-slide-toggle>
+                            </div>
+                        </div>
+
+                        <div class="fr la-sp-btw-c p-tb-1 p-lr-05 f-gt-sm-40 f-lt-md-100">
+                            <div class="f-85">
+                                <div class="fc la-s-str">
+                                    <label class="m-tb-02">Enable Option Quantity</label>
+                                </div>
+                            </div>
+                            <div class="f-15 align-r">
+                                <mat-slide-toggle color="primary" formControlName="IsEnableOptionQuantiyCtrl" [(ngModel)]="item.IsEnableOptionQuantiy"></mat-slide-toggle>
+                            </div>
+                        </div>
+                    </div>
+
+                    <ng-container *ngIf="item.IsEnableOptionQuantiy">
+                        <div class="f-gt-sm-r la-gt-sm-sp-btw-s f-lt-md-c la-lt-md-s-str">
+                            <div class="f-45">
+                                <mat-form-field appearance="outline" class="w-100">
+                                    <mat-label>Minimum Option</mat-label>
+                                    <input [(ngModel)]="item.MinimumOption" formControlName="MinimumOptionCtrl" matInput>
+                                </mat-form-field>
+                            </div>
+                            <div class="f-45">
+                                <mat-form-field appearance="outline" class="w-100">
+                                    <mat-label>Maximum Option</mat-label>
+                                    <input [(ngModel)]="item.MaximumOption" formControlName="MaximumOptionCtrl" matInput>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </ng-container>
+
+                </div>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+    <div mat-dialog-actions>
+        <div class="fr la-s-s">
+            <div class="f-50 p-lr-02">
+                <button type="button" class="w-100" mat-raised-button (click)="dismiss()">CANCEL</button>
+            </div>
+
+            <div class="f-50 p-lr-02">
+                <button *ngIf="!isEdit" type="submit" mat-raised-button color="primary" class="w-100" (click)="submit(fg)">
+                  <ng-container [ngSwitch]="isSubmitted"><div *ngSwitchCase="true" class="submitted fr la-c-c">Please wait<div class="loader"></div></div><div *ngSwitchDefault>SAVE</div>
+                  </ng-container>
+                </button>
+
+                <button *ngIf="isEdit" type="submit" mat-raised-button color="primary" class="w-100" (click)="update(fg)">
+                  <ng-container [ngSwitch]="isSubmitted"><div *ngSwitchCase="true" class="submitted fr la-c-c">Please wait<div class="loader"></div></div><div *ngSwitchDefault>UPDATE</div>
+                  </ng-container>
+                </button>
+            </div>
+        </div>
+    </div>
+</form>

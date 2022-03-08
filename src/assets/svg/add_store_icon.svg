@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="21px" height="18px" viewBox="0 0 21 18" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>add_store_icon</title>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="08-stores-single" transform="translate(-1006.000000, -121.000000)">
+            <g id="add_store_icon" transform="translate(1006.000000, 121.000000)">
+                <g id="Group-6" stroke="#FFFFFF" stroke-width="1.5">
+                    <polyline id="Line-3" stroke-linecap="square" points="1.85829363 9.75604155 1.85829363 13.8461538 14.866349 13.8461538 14.866349 9.75604155"></polyline>
+                    <path d="M13.4174519,0.75 L15.6423923,6.68317451 L15.0454958,6.68317451 L15.0455036,7.48269257 L14.4706654,7.59239867 L10.3997618,6.44181747 L10.3997696,7.48269257 L9.82493137,7.59239867 L5.7540277,6.44181747 L5.7540355,7.48269257 L5.21853295,7.58489159 L2.03744044,6.3315693 L2.03744825,7.48269257 L0.913701805,7.13263731 L3.30719079,0.75 L13.4174519,0.75 Z" id="Combined-Shape"></path>
+                </g>
+                <g id="Group-6" transform="translate(9.692308, 6.923077)">
+                    <circle id="Oval-Copy" stroke="#FFFFFF" stroke-width="1.5" fill="#DB0D15" cx="5.53846154" cy="5.53846154" r="4.78846154"></circle>
+                    <polygon id="Path-Copy" fill="#FFFFFF" fill-rule="nonzero" points="8.30769231 5.93406593 5.93406593 5.93406593 5.93406593 8.30769231 5.14285714 8.30769231 5.14285714 5.93406593 2.76923077 5.93406593 2.76923077 5.14285714 5.14285714 5.14285714 5.14285714 2.76923077 5.93406593 2.76923077 5.93406593 5.14285714 8.30769231 5.14285714"></polygon>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

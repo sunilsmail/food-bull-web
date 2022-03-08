@@ -1,0 +1,114 @@
+<div class="pos-rel">
+    <div class="fc la-s-str m-b-2">
+        <ul id="breadcrumb">
+            <li>
+                <a [routerLink]="['/account/stores']">
+                    <mat-icon class="mdi-18 m-r-05">restaurant_menu</mat-icon>
+                    Menu
+                </a>
+            </li>
+            <li><a [routerLink]="['/account/stores/store/', store.Id]" [queryParams]="{ tab: '2' }"> {{ menu.Name }}</a></li>
+            <li><a [routerLink]="['/account/stores/store/', store.Id]" [queryParams]="{ tab: '0' }"> {{ store.Name }}</a></li>
+        </ul>
+
+        <div class="fr la-e-e">
+            <button mat-flat-button type="button" (click)="addCategory()" class="m-lr-05" color="primary" matTooltip="Add Category" aria-label="Create"><span>Add Category</span></button>
+
+        </div>
+
+        <div>
+            <mat-tab-group dynamicHeight animationDuration="0ms" (selectedTabChange)="selectedTabChange($event)" class="c-tabs">
+                <mat-tab [label]="item.Name" *ngFor="let item of lstCategories;let tabIndex = index;">
+                    <div class="fc la-s-str">
+                        <div class="fc la-s-str">
+                            <mat-card class="card f-h-100">
+                                <mat-card-header class="hr-stretch">
+                                    <mat-card-title>
+                                        <div class="fr la-sp-btw-c">
+                                            <h3 class="card-title">{{ item.Name }}</h3>
+                                            <button mat-icon-button aria-label="icon" matTooltip="Edit" class="sm m-lr-05" (click)="editCategory(item.Id)">
+                                      <mat-icon class="material-icons-outlined mdi-18">edit</mat-icon>
+                                    </button>
+                                        </div>
+                                    </mat-card-title>
+                                </mat-card-header>
+                                <mat-card-content>
+
+                                    <div>
+                                        <div class="mat-card-table">
+                                            <div class="fc la-s-str">
+                                                <table #table mat-table matSort [dataSource]="dataSource" cdkDropList [cdkDropListData]="dataSource" (cdkDropListDropped)="dropTable($event)">
+                                                    <!-- ItemName Column -->
+                                                    <ng-container matColumnDef="ItemName">
+                                                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+                                                        <td mat-cell *matCellDef="let element">
+                                                            <div class="fr la-s-c">
+                                                                <mat-icon matTooltip="Drag to re-arrange order" style="pointer-events: all;" class="mdi-18 m-r-1 grey cursor-grab" cdkDragHandle>drag_indicator</mat-icon>
+                                                                <span class="line-1">{{element.Name}}</span>
+                                                            </div>
+                                                        </td>
+                                                    </ng-container>
+
+                                                    <!-- Price Column -->
+                                                    <ng-container matColumnDef="Price">
+                                                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Price </th>
+                                                        <td mat-cell *matCellDef="let element"><span class="line-1">{{element.Price}}</span></td>
+                                                    </ng-container>
+
+                                                    <!-- Availability Column -->
+                                                    <ng-container matColumnDef="Availability">
+                                                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Availability </th>
+                                                        <td mat-cell *matCellDef="let element">
+                                                            <mat-slide-toggle color="primary" [checked]="element.IsDefault" (change)="itemAvailabilityToggle($event, element)"></mat-slide-toggle>
+                                                        </td>
+                                                    </ng-container>
+
+                                                    <!-- Actions Column -->
+                                                    <ng-container matColumnDef="Actions">
+                                                        <th mat-header-cell *matHeaderCellDef class="tw-150 align-c"> Actions </th>
+                                                        <td mat-cell *matCellDef="let element" class="tw-150 align-r">
+                                                            <button mat-icon-button (click)="viewItem(element.Id)" aria-label="icon" matTooltip="View"><mat-icon class="material-icons-outlined grid-action-icons">visibility</mat-icon></button>
+                                                            <button mat-icon-button (click)="deleteItem(element)" aria-label="icon" matTooltip="Delete"><mat-icon class="material-icons-outlined grid-action-icons">delete</mat-icon></button>
+                                                            <button mat-icon-button (click)="editItem(element)" aria-label="icon" matTooltip="Edit"><mat-icon class="material-icons-outlined grid-action-icons">edit</mat-icon></button>
+                                                        </td>
+                                                    </ng-container>
+
+                                                    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                                                    <tr mat-row *matRowDef="let row; columns: displayedColumns" cdkDrag [cdkDragData]="row"></tr>
+                                                </table>
+
+                                                <button mat-stroked-button type="button" (click)="addItem(item.Id)" class="m-tb-1" color="primary" matTooltip="Add Item" aria-label="Create">
+                                              <mat-icon>add</mat-icon>
+                                              <span>Add Item</span>
+                                            </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </mat-card-content>
+                            </mat-card>
+                        </div>
+                    </div>
+                </mat-tab>
+            </mat-tab-group>
+
+        </div>
+    </div>
+
+    <mat-drawer-container class="custom-sidenav" autosize>
+        <mat-drawer #drawer class="custom-sidenav-drawer" mode="side" position="end">
+            <div class="fc la-s-str p1">
+                <div class="fr la-sp-btw-c">
+                    <h3 class="card-title">ADD ONS</h3>
+                </div>
+                <food-bull-view-addons [storeId]="storeId"></food-bull-view-addons>
+
+                <button mat-stroked-button type="button" (click)="addNewAddons()" class="m05" color="primary" matTooltip="ADD ONS" aria-label="Create"> <mat-icon>add</mat-icon> <span> ADD ONS</span></button>
+            </div>
+        </mat-drawer>
+
+        <div class="sidenav-content">
+            <div (click)="drawer.toggle()" class="vertical-button">A D D O N S</div>
+        </div>
+
+    </mat-drawer-container>
+</div>

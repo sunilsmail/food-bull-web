@@ -1,0 +1,97 @@
+<div class="fc la-s-str">
+    <mat-card class="card f-h-100">
+        <mat-card-header class="hr-stretch">
+            <mat-card-title>
+                <div class="fr la-sp-btw-c">
+                    <div class="fr la-s-s">
+                        <mat-icon class="card-title-icon">today</mat-icon>
+                        <h3 class="card-title">SPECIAL DAYS</h3>
+                    </div>
+                    <ng-container *ngIf="lstStoreSpecialDays?.length">
+                        <button mat-icon-button aria-label="icon" (click)="addSpecialDay()" matTooltip="Add Special Day">
+  <mat-icon class="material-icons-outlined mdi-24">add</mat-icon>
+</button>
+                    </ng-container>
+                </div>
+            </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <div>
+                <ng-container *ngIf="lstStoreSpecialDays?.length; else storeSpecialDaysCard;">
+                    <div class="mat-card-table">
+                        <div>
+                            <table mat-table matSort [dataSource]="dataSourceSpecialDays">
+
+                                <!-- Day Column -->
+                                <ng-container matColumnDef="Day">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Day(s) </th>
+                                    <td mat-cell *matCellDef="let element">
+                                        {{element.FromDate | date: 'dd-MM-yyyy'}}
+                                        <ng-container *ngIf="element.ToDate != element.FromDate"> to {{element.ToDate | date: 'dd-MM-yyyy'}}
+                                        </ng-container>
+                                    </td>
+                                </ng-container>
+
+                                <!-- OpeningHour Column -->
+                                <ng-container matColumnDef="OpeningHour">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="tw-150"> Opening Hour </th>
+                                    <td mat-cell *matCellDef="let element" class="tw-150">
+                                        <span class="line-1">{{element.OpenHrs != null ? (element.OpenHrs | date: 'HH:mm') : 'Closed'}}</span>
+                                    </td>
+                                </ng-container>
+
+                                <!-- ClosingHour Column -->
+                                <ng-container matColumnDef="ClosingHour">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Closing Hour </th>
+                                    <td mat-cell *matCellDef="let element"> <span class="line-1">{{element.CloseHrs != null ? (element.CloseHrs | date: 'HH:mm') : 'Closed'}}</span> </td>
+                                </ng-container>
+
+                                <!-- Description Column -->
+                                <ng-container matColumnDef="Description">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="tw-150"> Description </th>
+                                    <td mat-cell *matCellDef="let element" class="tw-150"><span class="line-1">{{element.Description}}</span></td>
+                                </ng-container>
+
+
+                                <!-- Status Column -->
+                                <ng-container matColumnDef="Status">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="tw-150"> Status </th>
+                                    <td mat-cell *matCellDef="let element" class="tw-150"> <span class="line-1">{{element.IsAllDayOpen}}</span></td>
+                                </ng-container>
+
+
+                                <!-- Actions Column -->
+                                <ng-container matColumnDef="Actions">
+                                    <th mat-header-cell *matHeaderCellDef class="tw-150 align-c"> Actions </th>
+                                    <td mat-cell *matCellDef="let element" class="tw-150 align-r">
+                                        <button mat-icon-button aria-label="icon" (click)="viewSpecialDay(element)" matTooltip="View"><mat-icon class="material-icons-outlined grid-action-icons">visibility</mat-icon></button>
+
+                                        <button mat-icon-button aria-label="icon" (click)="deleteSpecialDay(element)" matTooltip="Delete"><mat-icon class="material-icons-outlined grid-action-icons">delete</mat-icon></button>
+
+                                        <button mat-icon-button aria-label="icon" (click)="editSpecialDay(element)" matTooltip="Edit"><mat-icon class="material-icons-outlined grid-action-icons">edit</mat-icon></button>
+                                    </td>
+                                </ng-container>
+
+                                <tr mat-header-row *matHeaderRowDef="displayedColumnsSpecialDays; sticky: true"></tr>
+                                <tr mat-row *matRowDef="let row; columns: displayedColumnsSpecialDays"></tr>
+                            </table>
+
+                        </div>
+                    </div>
+
+
+                </ng-container>
+
+                <ng-template #storeSpecialDaysCard>
+                    <div class="fc la-c-c m-tb-2">
+                        <mat-icon class="mdi-64 m-tb-1" svgIcon="date_placeholder"></mat-icon>
+
+                        <span class="note m-tb-1">If their are any holidays in this month, please update</span>
+
+                        <button mat-stroked-button color="primary" (click)="addSpecialDay()" matTooltip="Add Special Day"><mat-icon>add</mat-icon>ADD</button>
+                    </div>
+                </ng-template>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>

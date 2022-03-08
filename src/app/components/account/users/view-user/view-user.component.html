@@ -1,0 +1,99 @@
+<div mat-dialog-header class="mat-dialog-header pos-rel">
+    <h1 mat-dialog-title class="align-c">USER DETAILS</h1>
+    <button mat-icon-button class="pos-abs top-right-0" (click)="dismiss()"><mat-icon class="mdi-18">close</mat-icon></button>
+</div>
+<div mat-dialog-content>
+    <div class="fc la-s-str">
+
+        <!-- Name -->
+        <div class="fr la-s-s">
+            <div class="icon-space"></div>
+            <small class="ft-wt-m">Name</small>
+        </div>
+
+        <div class="fr la-s-s m-b-1">
+            <div class="icon-space">
+                <mat-icon class="material-icons-outlined mdi-18">perm_identity</mat-icon>
+            </div>
+            <label>{{ user.FirstName }} {{user.LastName}}</label>
+        </div>
+        <!-- Name -->
+
+
+        <!-- MobileNumber -->
+        <div class="fr la-s-s">
+            <div class="icon-space"></div>
+            <small class="ft-wt-m">MobileNumber</small>
+        </div>
+
+        <div class="fr la-s-s m-b-1">
+            <div class="icon-space">
+                <mat-icon class="material-icons-outlined mdi-18">call</mat-icon>
+            </div>
+            <label>{{ user.MobileNumber }}</label>
+        </div>
+        <!-- MobileNumber -->
+
+
+        <!-- UserName -->
+        <div class="fr la-s-s">
+            <div class="icon-space"></div>
+            <small class="ft-wt-m">UserName</small>
+        </div>
+
+        <div class="fr la-s-s m-b-1">
+            <div class="icon-space">
+                <mat-icon class="material-icons-outlined mdi-18">face</mat-icon>
+            </div>
+            <label>{{ user.UserName }}</label>
+        </div>
+        <!-- UserName -->
+
+
+        <!-- Email -->
+        <div class="fr la-s-s">
+            <div class="icon-space"></div>
+            <small class="ft-wt-m">Email</small>
+        </div>
+
+        <div class="fr la-s-s m-b-1">
+            <div class="icon-space">
+                <mat-icon class="material-icons-outlined mdi-18">email</mat-icon>
+            </div>
+            <label>{{ user.Email }}</label>
+        </div>
+        <!-- Email -->
+
+        <!-- Stores -->
+        <div class="fr la-s-s">
+            <div class="icon-space"></div>
+            <small class="ft-wt-m">Stores</small>
+        </div>
+
+        <div class="fr la-s-s m-b-1">
+            <div class="icon-space">
+                <mat-icon class="material-icons-outlined mdi-18">storefront</mat-icon>
+            </div>
+            <ng-container *ngFor="let item of user.Stores;let i = index;">
+                <label class="line-1">{{item.Name}}</label>
+                <span *ngIf="i != user.Stores.length - 1">, </span>
+            </ng-container>
+        </div>
+        <!-- Stores -->
+
+        <!-- Role -->
+        <div class="fr la-s-s">
+            <div class="icon-space"></div>
+            <small class="ft-wt-m">Role</small>
+        </div>
+
+        <div class="fr la-s-s m-b-1">
+            <div class="icon-space">
+                <mat-icon class="material-icons-outlined mdi-18">switch_access_shortcut</mat-icon>
+            </div>
+            <label>{{ user.Role?.Name }}</label>
+        </div>
+        <!-- Role -->
+
+    </div>
+</div>

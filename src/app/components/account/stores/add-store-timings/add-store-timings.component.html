@@ -1,0 +1,90 @@
+<form autocomplete="off" [formGroup]="fg" class="fc la-s-str">
+    <div mat-dialog-header class="mat-dialog-header pos-rel">
+        <h1 mat-dialog-title class="align-c">{{title}}</h1>
+        <button mat-icon-button class="pos-abs top-right-0" (click)="dismiss()">
+        <mat-icon class="mdi-18">close</mat-icon>
+      </button>
+    </div>
+    <div mat-dialog-content>
+        <div class="fc la-s-str">
+
+            <div class="fr la-s-s">
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="align-l p-l-05">DAY</th>
+                            <th class="align-l p-l-05">OPENS AT</th>
+                            <th class="align-l p-l-05">CLOSES AT</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <ng-container formArrayName="timingsGroup">
+                        <tr *ngFor="let badge of getTimingArray.controls;let badgeIndex= index;" [formGroupName]="badgeIndex" class="min-h-50">
+                            <td class="w-200">
+                                <mat-slide-toggle #slideToggle color="primary" formControlName="IsAllDayOpen">{{weekDays[badgeIndex]}}</mat-slide-toggle>
+                            </td>
+                            <ng-container *ngIf="getDurationAccess(slideToggle) == true; else noDurationTemplate;">
+                                <td>
+                                    <mat-form-field appearance="outline" class="m-lr-05 max-100">
+                                        <mat-select formControlName="OpenHrs" [compareWith]="objectComparisonFunction">
+                                            <!-- <mat-option value="24 Hours">24 Hours</mat-option>
+                                        <mat-divider></mat-divider> -->
+                                            <mat-option *ngFor="let item of lstTime;" [value]="item">{{item | date: 'HH:mm'}}
+                                            </mat-option>
+                                        </mat-select>
+                                        <!-- <mat-error *ngIf="fg['controls'][badgeIndex].get('OpenHrs')?.hasError('required')">
+                                            This is required
+                                        </mat-error> -->
+                                    </mat-form-field>
+                                </td>
+                                <td>
+
+                                    <mat-form-field appearance="outline" class="m-lr-05 max-100">
+                                        <mat-select formControlName="CloseHrs" [compareWith]="objectComparisonFunction">
+                                            <mat-option *ngFor="let item of lstTime" [value]="item">{{item | date: 'HH:mm'}}
+                                            </mat-option>
+                                        </mat-select>
+                                        <!-- <mat-error *ngIf="fg['controls'][badgeIndex].get('CloseHrs')?.hasError('required')">
+                                            This is required
+                                        </mat-error> -->
+                                    </mat-form-field>
+                                </td>
+                                <td class="min-100">
+                                    <label *ngIf="isNextDay(getTimingArray.controls[badgeIndex])" class="stroke-label-success">+1 Day</label>
+                                </td>
+                            </ng-container>
+                            <ng-template #noDurationTemplate>
+                                <td colspan="3">Closed</td>
+                            </ng-template>
+                        </tr>
+                    </ng-container>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div mat-dialog-actions>
+        <div class="fc la-s-str">
+
+            <button *ngIf="!isEdit" type="submit" mat-raised-button color="primary" class="m-lr-05" (click)="submit(fg)">
+        <ng-container [ngSwitch]="isSubmitted">
+          <div *ngSwitchCase="true" class="submitted fr la-c-c">
+            Please wait
+            <div class="loader"></div>
+          </div>
+          <div *ngSwitchDefault>SAVE</div>
+        </ng-container>
+      </button>
+
+            <button *ngIf="isEdit" type="submit" mat-raised-button color="primary" class="m-lr-05" (click)="submit(fg)">
+        <ng-container [ngSwitch]="isSubmitted">
+          <div *ngSwitchCase="true" class="submitted fr la-c-c">
+            Please wait
+            <div class="loader"></div>
+          </div>
+          <div *ngSwitchDefault>UPDATE</div>
+        </ng-container>
+      </button>
+
+        </div>
+    </div>
+</form>

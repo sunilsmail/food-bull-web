@@ -1,0 +1,431 @@
+<div class="fc la-s-str m-b-2">
+    <ul id="breadcrumb">
+        <li>
+            <a [routerLink]="['/account/stores']">
+                <mat-icon class="mdi-18 m-r-05">storefront</mat-icon>
+                Stores
+            </a>
+        </li>
+        <li><a href="javascript:void(0)"> {{store.Name}}</a></li>
+    </ul>
+
+    <div>
+        <mat-tab-group #tabGroup dynamicHeight animationDuration="0ms" (selectedTabChange)="selectedTabChange($event)">
+            <mat-tab label="GENERAL">
+                <div class="fc la-s-str">
+                    <div class="f-gt-sm-r la-gt-sm-str-s f-lt-md-c la-lt-md-s-str">
+                        <div class="f-gt-sm-65 f-lt-md-100">
+                            <mat-card class="card">
+                                <mat-card-content>
+                                    <div class="fr la-s-s m-b-1">
+                                        <img [src]="store.Logo && store.Logo.ImageUrl ? store.Logo?.ImageUrl : './assets/images/retail-store.png'" alt="image.png" class="img-fit-128">
+
+                                        <div class="fc la-s-s f-auto p-lr-1">
+                                            <div class="fr la-sp-btw-s">
+                                                <div class="fr-w la-s-c">
+                                                    <h3 class="m0">{{store.Name}}</h3>
+                                                    <small class="note m-lr-05">({{store.LocationModel?.City?.Name || ''}})</small>
+                                                    <mat-icon class="note mdi-18 m-r-05">storefront</mat-icon>
+                                                </div>
+
+                                                <button mat-icon-button aria-label="icon" (click)="editStore()" class="pos-abs top-right-5" matTooltip="Edit Store Details">
+                          <mat-icon class="material-icons-outlined mdi-18">edit</mat-icon>
+                        </button>
+                                            </div>
+
+                                            <label>Account No: {{store.AccountNo}}</label>
+                                            <small class="note">Restaurant, Takeaway</small>
+                                            <small class="note">American Burger</small>
+
+                                            <div class="status-wrapper" [ngClass]="isOnline == true ? 'online' : 'offline'">
+                                                <span>{{ isOnline == true ? 'Online' : 'Offline' }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="fr la-s-s m-b-05">
+                                        <mat-icon class="material-icons-outlined mdi-18 m-r-05">place</mat-icon>
+                                        <div class="fr-w la-s-c">
+                                            <span>{{ store.LocationModel?.DoorNo ? store.LocationModel?.DoorNo + ',&nbsp;' : '' }}</span>
+                                            <span>{{ store.LocationModel?.Address1 ? store.LocationModel?.Address1 + ',&nbsp;' : '' }}</span>
+                                            <span>{{ store.LocationModel?.Address2 ? store.LocationModel?.Address2 + ',&nbsp;' : '' }}</span>
+                                            <span>{{ store.LocationModel?.LandMark ? store.LocationModel?.LandMark + ',&nbsp;' : '' }}</span>
+                                            <span>{{ store.LocationModel?.City?.Name ? store.LocationModel?.City?.Name + ',&nbsp;' : ''
+                        }}</span>
+                                            <span>{{ store.LocationModel?.State?.Name ? store.LocationModel?.State?.Name + ',&nbsp;' : ''
+                        }}</span>
+                                            <span>{{ store.LocationModel?.Country?.Name ? store.LocationModel?.Country?.Name + ',&nbsp;' : ''
+                        }}</span>
+                                            <span>{{ store.LocationModel?.ZipCode ? store.LocationModel?.ZipCode + '.' : '' }}</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="fr la-s-s m-b-05">
+                                        <mat-icon class="material-icons-outlined mdi-18 m-r-05">call</mat-icon>
+                                        <span>{{ store.ContactModel?.MobileNumber }}</span>
+                                    </div>
+
+                                    <div class="fr la-s-s m-b-05">
+                                        <mat-icon class="material-icons-outlined mdi-18 m-r-05">email</mat-icon>
+                                        <span>{{ store.ContactModel?.Email }}</span>
+                                    </div>
+
+                                    <div class="fr la-s-s m-b-1">
+                                        <mat-icon class="mdi-18 m-r-05">business</mat-icon>
+                                        <span>*Not assigned to any group</span>
+                                    </div>
+
+                                </mat-card-content>
+                            </mat-card>
+                        </div>
+
+                        <div class="fc la-s-str f-gt-sm-35 f-lt-md-100">
+                            <mat-card class="card f-h-100">
+                                <mat-card-header class="hr-stretch">
+                                    <mat-card-title>
+                                        <div>
+                                            <div class="fr la-sp-btw-c">
+                                                <div class="fr la-s-s">
+                                                    <mat-icon class="card-title-icon">schedule</mat-icon>
+                                                    <h3 class="card-title">STORES TIMING</h3>
+                                                </div>
+
+                                                <button *ngIf="store.TimingsModel?.length" mat-icon-button aria-label="icon" (click)="editStoreTimings()" matTooltip="Update Store Timings">
+                          <mat-icon class="material-icons-outlined mdi-18">edit</mat-icon>
+                        </button>
+                                            </div>
+                                        </div>
+                                    </mat-card-title>
+                                </mat-card-header>
+                                <mat-card-content>
+
+                                    <div>
+                                        <ng-container *ngIf="store.TimingsModel?.length; else storeTimingCard;">
+                                            <table class="table table-striped">
+                                                <tbody>
+                                                    <tr *ngFor="let sTiming of store.TimingsModel; let sIndex = index;">
+                                                        <td>{{ weekDays[sIndex] }}</td>
+                                                        <td>
+                                                            <ng-container *ngIf="sTiming.IsAllDayOpen;else closedTemplate">
+                                                                {{ sTiming.OpenHrs | date: 'HH:mm' }} - {{ sTiming.CloseHrs | date: 'HH:mm' }}
+                                                                <label *ngIf="sTiming.IsNextDay" class="stroke-label-success">+1 Day</label>
+                                                            </ng-container>
+                                                            <ng-template #closedTemplate>Closed</ng-template>
+                                                        </td>
+                                                </tbody>
+                                            </table>
+                                        </ng-container>
+
+                                        <ng-template #storeTimingCard>
+                                            <div class="fc la-c-c m-tb-2">
+                                                <mat-icon class="mdi-64 m-tb-1" svgIcon="timer_placeholder"></mat-icon>
+
+                                                <span class="note m-tb-1">You haven't updated store timings yet, please add</span>
+
+                                                <button mat-stroked-button color="primary" (click)="addStoreTimings()" matTooltip="Add Store Timings">
+                          <mat-icon>add</mat-icon>
+                          ADD
+                        </button>
+                                            </div>
+                                        </ng-template>
+                                    </div>
+                                </mat-card-content>
+                            </mat-card>
+                        </div>
+                    </div>
+
+                    <foodbull-store-special-day [storeId]="store.Id"></foodbull-store-special-day>
+
+                    <div class="fc la-s-str">
+                        <mat-card class="card f-h-100">
+                            <mat-card-header class="hr-stretch">
+                                <mat-card-title>
+                                    <div class="fr la-sp-btw-c">
+                                        <div class="fr la-s-s">
+                                            <mat-icon class="card-title-icon" svgIcon="contact_person_icon"></mat-icon>
+                                            <h3 class="card-title">CONTACT PERSON</h3>
+                                        </div>
+                                        <ng-container *ngIf="store.Contacts?.length">
+                                            <button mat-icon-button aria-label="icon" (click)="addContactPerson()" matTooltip="Add Contact Person">
+                        <mat-icon class="material-icons-outlined mdi-24">add</mat-icon>
+                      </button>
+                                        </ng-container>
+                                    </div>
+                                </mat-card-title>
+                            </mat-card-header>
+                            <mat-card-content>
+
+                                <div>
+                                    <ng-container *ngIf="store.Contacts?.length; else storeContactPersonCard;">
+                                        <div class="mat-card-table">
+                                            <div>
+                                                <table mat-table matSort [dataSource]="dataSourceContacts">
+
+                                                    <!-- Name Column -->
+                                                    <ng-container matColumnDef="Name">
+                                                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+                                                        <td mat-cell *matCellDef="let element"><span class="line-1">{{element.Name}}</span></td>
+                                                    </ng-container>
+
+                                                    <!-- Email Column -->
+                                                    <ng-container matColumnDef="Email">
+                                                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
+                                                        <td mat-cell *matCellDef="let element"><span class="line-1">{{element.Email}}</span></td>
+                                                    </ng-container>
+                                                    <!-- MobileNumber Column -->
+                                                    <ng-container matColumnDef="MobileNumber">
+                                                        <th mat-header-cell *matHeaderCellDef mat-sort-header> MobileNumber </th>
+                                                        <td mat-cell *matCellDef="let element"><span class="line-1">{{element.MobileNumber}}</span>
+                                                        </td>
+                                                    </ng-container>
+                                                    <!-- Role Column -->
+                                                    <ng-container matColumnDef="Role">
+                                                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Role </th>
+                                                        <td mat-cell *matCellDef="let element"><span class="line-1">{{element.Role}}</span></td>
+                                                    </ng-container>
+
+                                                    <!-- Actions Column -->
+                                                    <ng-container matColumnDef="Actions">
+                                                        <th mat-header-cell *matHeaderCellDef class="tw-150 align-c"> Actions </th>
+                                                        <td mat-cell *matCellDef="let element" class="tw-150 align-r">
+                                                            <button mat-icon-button aria-label="icon" (click)="viewContact(element)" matTooltip="View">
+                                <mat-icon class="material-icons-outlined grid-action-icons">visibility</mat-icon>
+                              </button>
+
+                                                            <button *ngIf="!element.IsMain" mat-icon-button aria-label="icon" (click)="deleteContact(element)" matTooltip="Delete">
+                                <mat-icon class="material-icons-outlined grid-action-icons">delete</mat-icon>
+                              </button>
+
+                                                            <button mat-icon-button aria-label="icon" (click)="editContact(element)" matTooltip="Edit">
+                                <mat-icon class="material-icons-outlined grid-action-icons">edit</mat-icon>
+                              </button>
+                                                        </td>
+                                                    </ng-container>
+
+                                                    <tr mat-header-row *matHeaderRowDef="displayedColumnsContacts; sticky: true"></tr>
+                                                    <tr mat-row *matRowDef="let row; columns: displayedColumnsContacts"></tr>
+                                                </table>
+
+                                            </div>
+                                        </div>
+                                    </ng-container>
+
+                                    <ng-template #storeContactPersonCard>
+
+                                        <div class="fc la-c-c m-tb-2">
+                                            <mat-icon class="mdi-64 m-tb-1" svgIcon="contact_person_placeholder"></mat-icon>
+
+                                            <span class="note m-tb-1">Please add contact person</span>
+
+                                            <button mat-stroked-button color="primary" (click)="addContactPerson()" matTooltip="Add Contact Person">
+                        <mat-icon>add</mat-icon>ADD
+                      </button>
+                                        </div>
+                                    </ng-template>
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+                </div>
+            </mat-tab>
+            <mat-tab label="USERS">
+                <mat-card class="card f-h-100">
+                    <mat-card-header class="hr-stretch">
+                        <mat-card-title>
+                            <div class="fr la-sp-btw-c">
+                                <div class="fr la-s-s">
+                                    <mat-icon class="card-title-icon">perm_identity</mat-icon>
+                                    <h3 class="card-title">USERS</h3>
+                                </div>
+                                <button mat-icon-button aria-label="icon" (click)="addUser()" matTooltip="Add User">
+                  <mat-icon class="material-icons-outlined mdi-24">add</mat-icon>
+                </button>
+                            </div>
+                        </mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+
+                        <div class="mat-card-table">
+
+                            <div>
+                                <table mat-table matSort [dataSource]="dataSourceStoreUser">
+
+                                    <!-- Name Column -->
+                                    <ng-container matColumnDef="Name">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+                                        <td mat-cell *matCellDef="let element">
+                                            <span class="line-1">{{element.FirstName}} {{element.LastName}}</span>
+                                        </td>
+                                    </ng-container>
+
+                                    <!-- Role Column -->
+                                    <ng-container matColumnDef="Role">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="tw-150"> Role </th>
+                                        <td mat-cell *matCellDef="let element" class="tw-150">
+                                            <span class="line-1">{{element.Role?.Name}}</span>
+                                        </td>
+                                    </ng-container>
+
+                                    <!-- Email Column -->
+                                    <ng-container matColumnDef="Email">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
+                                        <td mat-cell *matCellDef="let element">
+                                            <span class="line-1">{{element.Email}}</span>
+                                        </td>
+                                    </ng-container>
+
+                                    <!-- MobileNumber Column -->
+                                    <ng-container matColumnDef="MobileNumber">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="tw-150"> MobileNumber </th>
+                                        <td mat-cell *matCellDef="let element" class="tw-150">
+                                            <span class="line-1">{{element.MobileNumber}}</span>
+                                        </td>
+                                    </ng-container>
+
+                                    <!-- Actions Column -->
+                                    <ng-container matColumnDef="Actions">
+                                        <th mat-header-cell *matHeaderCellDef class="tw-150 align-c"> Actions </th>
+                                        <td mat-cell *matCellDef="let element" class="tw-150 align-r">
+                                            <button mat-icon-button aria-label="icon" matTooltip="View" (click)="viewUser(element)">
+                        <mat-icon class="material-icons-outlined grid-action-icons">visibility</mat-icon>
+                      </button>
+
+                                            <button mat-icon-button aria-label="icon" matTooltip="Delete" (click)="deleteUser(element)">
+                        <mat-icon class="material-icons-outlined grid-action-icons">delete</mat-icon>
+                      </button>
+
+                                            <button mat-icon-button aria-label="icon" matTooltip="Edit" (click)="editUser(element)">
+                        <mat-icon class="material-icons-outlined grid-action-icons">edit</mat-icon>
+                      </button>
+
+                                        </td>
+                                    </ng-container>
+
+                                    <tr mat-header-row *matHeaderRowDef="displayedColumnsStoreUser; sticky: true"></tr>
+                                    <tr mat-row *matRowDef="let row; columns: displayedColumnsStoreUser"></tr>
+                                </table>
+
+                                <div class="fr la-c-c bg-white">
+                                    <mat-paginator [pageSize]="20" [pageSizeOptions]="[5, 10, 20, 50, 100, 500]" showFirstLastButtons class="m-auto">
+                                    </mat-paginator>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+            </mat-tab>
+
+            <mat-tab label="MENU">
+
+                <mat-card class="card f-h-100">
+                    <mat-card-header class="hr-stretch">
+                        <mat-card-title>
+                            <div class="fr la-sp-btw-c">
+                                <div class="fr la-s-s">
+                                    <mat-icon class="card-title-icon">restaurant_menu</mat-icon>
+                                    <h3 class="card-title">MENU</h3>
+                                </div>
+                                <button mat-icon-button aria-label="icon" (click)="addMenu()" matTooltip="Add Menu">
+                  <mat-icon class="material-icons-outlined mdi-24">add</mat-icon>
+                </button>
+                            </div>
+                        </mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+
+                        <div class="mat-card-table">
+
+                            <div>
+                                <table mat-table matSort [dataSource]="dataSourceStoreMenu">
+
+                                    <!-- MenuName Column -->
+                                    <ng-container matColumnDef="MenuName">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Menu Name </th>
+                                        <td mat-cell *matCellDef="let element">
+                                            <span class="line-1"><a class="nlink" (click)="goToCategoryPage(element.Id)">{{ element.Name
+                          }}</a></span>
+                                        </td>
+                                    </ng-container>
+
+                                    <!-- Description Column -->
+                                    <ng-container matColumnDef="Description">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Description </th>
+                                        <td mat-cell *matCellDef="let element">
+                                            <span class="line-1"> {{ element.Description }} </span>
+                                        </td>
+                                    </ng-container>
+
+                                    <!-- Actions Column -->
+                                    <ng-container matColumnDef="Actions">
+                                        <th mat-header-cell *matHeaderCellDef class="tw-150 align-c"> Actions </th>
+                                        <td mat-cell *matCellDef="let element" class="tw-150 align-r">
+                                            <button mat-icon-button aria-label="icon" matTooltip="Delete" (click)="deleteStoreMenu(element)">
+                        <mat-icon class="material-icons-outlined grid-action-icons">delete</mat-icon>
+                      </button>
+
+                                            <button mat-icon-button aria-label="icon" matTooltip="Edit" (click)="editStoreMenu(element)">
+                        <mat-icon class="material-icons-outlined grid-action-icons">edit</mat-icon>
+                      </button>
+
+                                        </td>
+                                    </ng-container>
+
+                                    <tr mat-header-row *matHeaderRowDef="displayedColumnsStoreMenu; sticky: true"></tr>
+                                    <tr mat-row *matRowDef="let row; columns: displayedColumnsStoreMenu"></tr>
+                                </table>
+
+                                <div class="fr la-c-c bg-white">
+                                    <mat-paginator [pageSize]="20" [pageSizeOptions]="[5, 10, 20, 50, 100, 500]" showFirstLastButtons class="m-auto">
+                                    </mat-paginator>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+
+            </mat-tab>
+            <ng-container *ngIf="advancedOptionsAccess">
+                <mat-tab label="ADVANCED OPTIONS">
+                    <form autocomplete="off" [formGroup]="fgStoreAdvancedOptions" class="fc la-s-str" novalidate>
+
+                        <mat-card class="card f-h-100">
+                            <mat-card-header class="hr-stretch">
+                                <mat-card-title>
+                                    <div class="fr la-s-s">
+                                        <mat-icon class="card-title-icon">settings</mat-icon>
+                                        <h3 class="card-title">ADVANCED OPTIONS</h3>
+                                    </div>
+                                </mat-card-title>
+                            </mat-card-header>
+                            <mat-card-content>
+                                <div class="fc la-s-str">
+                                    <div class="fc la-s-str m-b-1">
+                                        <mat-label>Store Status</mat-label>
+                                        <mat-radio-group aria-label="type" formControlName="StatusCtrl" [(ngModel)]="store.Status" color="primary">
+                                            <mat-radio-button *ngFor="let type of lstStatusAdvancedOptions;" [value]="type.Id" class="m-r-1">
+                                                {{ type.Name }}</mat-radio-button>
+                                        </mat-radio-group>
+                                        <mat-error *ngIf="fgStoreAdvancedOptions.get('StatusCtrl')?.hasError('required')">
+                                            This field is required
+                                        </mat-error>
+                                    </div>
+                                </div>
+                            </mat-card-content>
+                            <mat-card-actions>
+                                <button type="submit" mat-raised-button color="primary" class="w-100" (click)="submitStoreAdvancedOptions(fgStoreAdvancedOptions)">
+                  <ng-container [ngSwitch]="isAdvancedOptionsSubmitted">
+                    <div *ngSwitchCase="true" class="submitted fr la-c-c">Please wait<div class="loader"></div>
+                    </div>
+                    <div *ngSwitchDefault>Submit</div>
+                  </ng-container>
+                </button>
+                            </mat-card-actions>
+                        </mat-card>
+
+                    </form>
+                </mat-tab>
+            </ng-container>
+        </mat-tab-group>
+
+    </div>
+</div>

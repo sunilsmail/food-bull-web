@@ -1,0 +1,47 @@
+<section class="row-gap">
+    <div class="f-gt-sm-r la-gt-sm-sp-btw-c f-lt-md-c la-lt-md-s-str">
+        <h1 class="page-title">{{pageTitle}}</h1>
+
+        <div class="fr la-e-c">
+            <button mat-flat-button type="button" (click)="createSingleStore()" class="m-lr-05" color="primary" matTooltip="Add Single Store" aria-label="Create">
+            <mat-icon svgIcon="add_store_icon" class="mdi-18 m-r-05"></mat-icon>
+            <span>Single Store</span>
+          </button>
+
+
+            <button mat-flat-button type="button" (click)="createStoreGroup()" color="primary" matTooltip="Add Store Group" aria-label="Create">
+              <mat-icon svgIcon="add_group_icon" class="mdi-18 m-r-05"></mat-icon>
+              <span>Store Group</span>
+            </button>
+
+            <!-- <mat-form-field floatLabel="never" class="search m-lr-1">
+                <input matInput autocomplete="off" [(ngModel)]="search" (keyup)="applyFilter($event.target)" placeholder="search">
+
+                <button mat-button *ngIf="search" matSuffix mat-icon-button aria-label="Clear" (click)="search=''"><mat-icon>close</mat-icon></button>
+            </mat-form-field> -->
+        </div>
+    </div>
+
+</section>
+
+<div>
+    <mat-tab-group #tabGroup dynamicHeight animationDuration="0ms" (selectedTabChange)="selectedTabChange($event)">
+
+        <mat-tab label="SINGLE STORE">
+            <foodbull-store-grid #storeGrid></foodbull-store-grid>
+        </mat-tab>
+        <mat-tab label="STORE GROUP">
+            <foodbull-store-group-grid #storeGroupGrid></foodbull-store-group-grid>
+        </mat-tab>
+
+        <!-- <mat-tab disabled>
+            <ng-template mat-tab-label>
+                <button mat-flat-button type="button" (click)="createSingleStore()" class="m-lr-05" color="primary" matTooltip="Add Single Store" aria-label="Create">
+          <mat-icon svgIcon="add_store_icon" class="mdi-18 m-r-05"></mat-icon>
+          <span>Single Store</span>
+        </button>
+            </ng-template>
+        </mat-tab> -->
+    </mat-tab-group>
+
+</div>

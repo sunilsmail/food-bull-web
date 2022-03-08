@@ -1,0 +1,60 @@
+<div mat-dialog-header class="mat-dialog-header pos-rel">
+    <h1 mat-dialog-title class="align-c">VIEW CONTACT PERSON</h1>
+    <button mat-icon-button class="pos-abs top-right-0" (click)="dismiss()"><mat-icon class="mdi-18">close</mat-icon></button>
+</div>
+<div mat-dialog-content>
+    <div class="fc la-s-str">
+
+        <div class="fr la-s-s">
+            <div class="icon-space"></div>
+            <small class="ft-wt-m">Name</small>
+        </div>
+
+        <div class="fr la-s-s m-b-1">
+            <div class="icon-space">
+                <mat-icon class="material-icons-outlined mdi-18">perm_identity</mat-icon>
+            </div>
+            <label>{{ contact.Name }}</label>
+        </div>
+
+
+        <div class="fr la-s-s">
+            <div class="icon-space"></div>
+            <small class="ft-wt-m">E-Mail</small>
+        </div>
+
+        <div class="fr la-s-s m-b-1">
+            <div class="icon-space">
+                <mat-icon class="material-icons-outlined mdi-18">email</mat-icon>
+            </div>
+            <label>{{ contact.Email }}</label>
+        </div>
+
+        <div class="fr la-s-s">
+            <div class="icon-space"></div>
+            <small class="ft-wt-m">Role</small>
+        </div>
+
+        <div class="fr la-s-s m-b-1">
+            <div class="icon-space">
+                <mat-icon class="material-icons-outlined mdi-18">apps</mat-icon>
+            </div>
+            <label>{{ contact.Role }}</label>
+        </div>
+
+
+        <div class="fr la-s-s">
+            <div class="icon-space"></div>
+            <small class="ft-wt-m">Mobile Number</small>
+        </div>
+
+        <div class="fr la-s-s m-b-1">
+            <div class="icon-space">
+                <mat-icon class="material-icons-outlined mdi-18">call</mat-icon>
+            </div>
+            <label>{{ contact.MobileNumber }}</label>
+        </div>
+
+
+    </div>
+</div>

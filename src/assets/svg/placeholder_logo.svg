@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="124px" height="124px" viewBox="0 0 124 124" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>upload</title>
+    <defs>
+        <rect id="path-1" x="0" y="0" width="124" height="124" rx="3"></rect>
+        <mask id="mask-2" maskContentUnits="userSpaceOnUse" maskUnits="objectBoundingBox" x="0" y="0" width="124" height="124" fill="white">
+            <use xlink:href="#path-1"></use>
+        </mask>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="09_add-New-Store" transform="translate(-425.000000, -560.000000)">
+            <g id="placeholder_logo" transform="translate(425.000000, 560.000000)">
+                <path d="M62.7323315,46.1410151 L76.5057982,51.6066008 C77.2678066,51.908981 77.7681159,52.6457744 77.7681159,53.4655858 L77.7681159,67.2214238 C77.7681159,67.9615519 77.3593755,68.6411712 76.705593,68.9880977 L62.8215351,76.355607 C62.2352649,76.6667084 61.532851,76.6667084 60.9465809,76.355607 L47.0625229,68.9880977 C46.4087405,68.6411712 46,67.9615519 46,67.2214238 L46,53.472872 C46,52.6494266 46.5046929,51.910144 47.2715816,51.6102376 L61.2662309,46.1373657 C61.7377751,45.9529594 62.2617111,45.9542636 62.7323315,46.1410151 Z M75.9508492,54.9035421 L63.0541548,59.8418887 L63.0541548,74.0515833 L75.9508492,67.4933066 L75.9508492,54.9035421 Z M62,48.3134796 L48.9863281,53.1409831 L62,57.9684867 L74.7966974,53.1409831 L62,48.3134796 Z" id="Combined-Shape" fill="#D2D6DE"></path>
+                <use id="Rectangle" stroke="#D4D5D9" mask="url(#mask-2)" stroke-width="2" stroke-dasharray="4" xlink:href="#path-1"></use>
+            </g>
+        </g>
+    </g>
+</svg>

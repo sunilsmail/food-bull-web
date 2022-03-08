@@ -1,0 +1,68 @@
+<form autocomplete="off" [formGroup]="fg" class="fc la-s-str">
+    <label><b>{{ title }}</b></label>
+    <small class="note">{{ subTitle }}</small>
+    <input #fileInput type="file" [multiple]="isMultiple" accept="image/*" (change)="fileChangeEvent($event)" style="display:none;" />
+
+    <!-- <div class="fr la-s-e m-b-1">
+        <div class="file-image-wrapper">
+
+            <ng-template #inputfileBlock>
+                <div [ngStyle]="{'background-image': 'url(' + inputfileImage + ')'}" class="cover-bg mdi-128"></div>
+            </ng-template>
+        </div>
+
+        <div class="fc la-s-str f-auto">
+            <div class="input-group fr la-s-s">
+                <div class="input f-auto p-l-1">
+                    <input [(ngModel)]="inputfile" formControlName="FileCtrl" type="text" readonly>
+                </div>
+                <ng-container *ngIf="inputfile">
+                    <div class="btn-icon" id="clearButton" matTooltip="Clear selection">
+                        <mat-icon class="red mdi-18" (click)="clear()">cancel</mat-icon>
+                    </div>
+                </ng-container>
+                <div class="btn-icon" (click)="fileInput.click()" matTooltip="Upload">
+                    <mat-icon class="mdi-18" svgIcon="upload_logo"></mat-icon>
+                </div>
+
+            </div>
+        </div>
+    </div> -->
+
+    <div class="fr-w la-s-c m-tb-1">
+
+        <ng-container *ngIf="isMultiple && selectedFiles?.length; else singleImageContainer">
+            <div class="fr la-s-s m-b-1">
+                <div class="img-thumbnail fc la-s-str" *ngFor="let image of selectedFiles; let index = index;">
+                    <ng-container *ngIf="image.IMGID; else newImage;">
+                        <img [src]="image.ImageUrl" alt="image.png" class="img-fit-128">
+                    </ng-container>
+                    <ng-template #newImage>
+                        <div [ngStyle]="{'background-image': 'url(' + image.base64 + ')'}" class="cover-bg mdi-128"></div>
+                        <div class="new">new</div>
+                    </ng-template>
+                    <button mat-icon-button (click)="deleteImage(image, index)" color="warn" matTooltip="Delete image"><mat-icon>delete</mat-icon></button>
+
+                </div>
+            </div>
+        </ng-container>
+
+        <ng-template #singleImageContainer>
+            <div class="fr la-s-s m-b-1">
+                <div class="img-thumbnail fc la-s-str" *ngFor="let image of selectedFiles;let index = index;">
+                    <ng-container *ngIf="image.IMGID; else savedImage;">
+                        <img [src]="image.ImageUrl" alt="image.png" class="img-fit-128">
+                    </ng-container>
+                    <ng-template #savedImage>
+                        <div [ngStyle]="{'background-image': 'url(' + image.base64 + ')'}" class="cover-bg mdi-128"></div>
+                    </ng-template>
+                    <button mat-icon-button (click)="deleteImage(image, index)" color="warn" matTooltip="Delete image"><mat-icon>delete</mat-icon></button>
+                </div>
+            </div>
+        </ng-template>
+
+        <div [ngClass]="{ 'disabled' : !isMultiple && selectedFiles.length }">
+            <mat-icon class="mdi-110 upload-padding" svgIcon="placeholder_logo" (click)="fileInput.click()" matTooltip="Upload"></mat-icon>
+        </div>
+    </div>
+</form>

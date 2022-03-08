@@ -1,0 +1,63 @@
+<section>
+    <div class="fr la-e-c">
+        <button mat-flat-button type="button" (click)="add()" class="m-lr-05" color="primary" matTooltip="Add Service" aria-label="Create">
+  <mat-icon>add</mat-icon>
+  <span>Add Service</span>
+</button>
+
+        <mat-form-field floatLabel="never" class="search m-lr-1">
+            <input matInput autocomplete="off" [(ngModel)]="search" (keyup)="applyFilter($event.target)" placeholder="search">
+            <button mat-button *ngIf="search" matSuffix mat-icon-button aria-label="Clear" (click)="search=''"><mat-icon>close</mat-icon></button>
+        </mat-form-field>
+    </div>
+</section>
+
+<section>
+    <div class="mat-card-table">
+
+        <div>
+            <table mat-table matSort [dataSource]="dataSource">
+
+                <!-- Name Column -->
+                <ng-container matColumnDef="Name">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+                    <td mat-cell *matCellDef="let element">{{ element.Name }}</td>
+                </ng-container>
+
+                <!-- Description Column -->
+                <ng-container matColumnDef="Description">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Description </th>
+                    <td mat-cell *matCellDef="let element">{{ element.Description }}</td>
+                </ng-container>
+
+                <!-- IsActive Column -->
+                <ng-container matColumnDef="IsActive">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> IsActive </th>
+                    <td mat-cell *matCellDef="let element">
+                        <span class="status" ngClass="{{ element.IsActive ? 'active' : 'inactive' }}">{{ element.IsActive ? 'Active' : 'InActive' }}</span>
+                    </td>
+                </ng-container>
+
+                <!-- Actions Column -->
+                <ng-container matColumnDef="Actions">
+                    <th mat-header-cell *matHeaderCellDef class="tw-150 align-c"> Actions </th>
+                    <td mat-cell *matCellDef="let element" class="tw-150 align-r">
+
+                        <button mat-icon-button aria-label="icon" matTooltip="Edit" (click)="edit(element)"><mat-icon class="material-icons-outlined grid-action-icons">edit</mat-icon></button>
+
+                        <button mat-icon-button aria-label="icon" matTooltip="Delete" (click)="delete(element)"><mat-icon class="material-icons-outlined grid-action-icons">delete</mat-icon></button>
+
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+            </table>
+
+            <div class="fr la-c-c bg-white">
+                <mat-paginator [pageSize]="20" [pageSizeOptions]="[5, 10, 20, 50, 100, 500]" showFirstLastButtons class="m-auto">
+                </mat-paginator>
+            </div>
+        </div>
+    </div>
+</section>

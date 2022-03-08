@@ -1,0 +1,231 @@
+<div class="fc la-s-str">
+    <ul id="breadcrumb">
+        <li>
+            <a [routerLink]="['/account/stores']">
+                <mat-icon class="mdi-18 m-r-05">storefront</mat-icon>
+                Stores
+            </a>
+        </li>
+        <li><a [routerLink]="['/account/stores/view-stores']" [queryParams]="{ tab: '1' }"> Groups </a></li>
+        <li><a [routerLink]="['/account/stores/view-stores']" [queryParams]="{ tab: '1' }"> {{store.Name}}</a></li>
+    </ul>
+
+    <div>
+
+        <mat-tab-group dynamicHeight animationDuration="0ms">
+            <mat-tab label="GENERAL">
+                <div class="fc la-s-str">
+                    <mat-card class="card">
+                        <mat-card-content>
+                            <div class="fr la-s-s m-b-1">
+                                <img [src]="store.Logo && store.Logo.ImageUrl ? store.Logo?.ImageUrl : './assets/images/retail-store.png'" alt="image.png" class="img-fit-128">
+
+                                <div class="fc la-s-s f-auto p-lr-1">
+                                    <div class="fr la-sp-btw-s">
+                                        <div class="fr-w la-s-c">
+                                            <h3 class="m0">{{store.Name}}</h3>
+                                            <small class="note m-lr-05">({{store.LocationModel?.City?.Name || ''}})</small>
+                                            <mat-icon class="note mdi-18 m-r-05">business</mat-icon>
+                                        </div>
+
+                                        <button mat-icon-button aria-label="icon" (click)="editStoreGroup()" class="pos-abs top-right-5" matTooltip="Edit Store Details">
+                                      <mat-icon class="material-icons-outlined mdi-18">edit</mat-icon>
+                                    </button>
+
+                                    </div>
+
+                                    <label>Account No: {{store.AccountNo}}</label>
+
+                                    <div class="f-gt-sm-r la-gt-sm-sp-btw-s f-lt-md-c la-lt-md-s-str w-100">
+                                        <div class="fr la-s-c m-b-05 f-gt-sm-30 f-lt-md-100">
+                                            <mat-icon class="mdi-18 m-r-05">place</mat-icon>
+                                            <div class="fr-w la-s-c">
+                                                <span>{{ store.LocationModel?.DoorNo ? store.LocationModel?.DoorNo + ',&nbsp;' : '' }}</span>
+                                                <span>{{ store.LocationModel?.Address1 ? store.LocationModel?.Address1 + ',&nbsp;' : '' }}</span>
+                                                <span>{{ store.LocationModel?.Address2 ? store.LocationModel?.Address2 + ',&nbsp;' : '' }}</span>
+                                                <span>{{ store.LocationModel?.LandMark ? store.LocationModel?.LandMark + ',&nbsp;' : '' }}</span>
+                                                <span>{{ store.LocationModel?.City?.Name ? store.LocationModel?.City?.Name + ',&nbsp;' : '' }}</span>
+                                                <span>{{ store.LocationModel?.State?.Name ? store.LocationModel?.State?.Name + ',&nbsp;' : '' }}</span>
+                                                <span>{{ store.LocationModel?.Country?.Name ? store.LocationModel?.Country?.Name + ',&nbsp;' : '' }}</span>
+                                                <span>{{ store.LocationModel?.ZipCode ? store.LocationModel?.ZipCode + '.' : '' }}</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="fr la-s-s m-b-05 f-gt-sm-30 f-lt-md-100">
+                                            <mat-icon class="mdi-18 m-r-05">call</mat-icon>
+                                            <span>{{store.ContactModel?.MobileNumber}}</span>
+                                        </div>
+
+                                        <div class="fr la-s-s m-b-05 f-gt-sm-30 f-lt-md-100">
+                                            <mat-icon class="mdi-18 m-r-05">email</mat-icon>
+                                            <span>{{store.ContactModel?.Email}}</span>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                            <div class="mat-card-table" *ngIf="dataSourceSingleStore.data">
+
+                                <div>
+                                    <table mat-table matSort [dataSource]="dataSourceSingleStore">
+
+                                        <!-- logo Column -->
+                                        <ng-container matColumnDef="Logo">
+                                            <th mat-header-cell *matHeaderCellDef mat-sort-header class="tw-100"> Logo </th>
+                                            <td mat-cell *matCellDef="let element" class="tw-100">
+                                                <img [src]="element.Logo ? element.Logo?.ImageUrl : './assets/images/retail-store.png'" alt="img.png" class="grid-logo">
+                                            </td>
+                                        </ng-container>
+
+                                        <!-- Name Column -->
+                                        <ng-container matColumnDef="Name">
+                                            <th mat-header-cell *matHeaderCellDef mat-sort-header class="tw-150"> Store Name </th>
+                                            <td mat-cell *matCellDef="let element" class="tw-150">
+                                                <span class="line-1">
+                            <a class="nlink" [routerLink]="['/account/stores/store', element.Id]">{{element.Name}}</a>
+                          </span>
+                                            </td>
+                                        </ng-container>
+
+                                        <!-- AccountNo Column -->
+                                        <ng-container matColumnDef="AccountNo">
+                                            <th mat-header-cell *matHeaderCellDef mat-sort-header class="tw-150"> Account No </th>
+                                            <td mat-cell *matCellDef="let element" class="tw-150"><span class="line-1">{{element.AccountNo}}</span></td>
+                                        </ng-container>
+
+                                        <!-- Location Column -->
+                                        <ng-container matColumnDef="Address">
+                                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Address </th>
+                                            <td mat-cell *matCellDef="let element"> <span class="line-1">{{element.LocationModel?.Address1}}</span> </td>
+                                        </ng-container>
+
+                                        <!-- Phone Column -->
+                                        <ng-container matColumnDef="Phone">
+                                            <th mat-header-cell *matHeaderCellDef mat-sort-header class="tw-150"> Phone </th>
+                                            <td mat-cell *matCellDef="let element" class="tw-150"> <span class="line-1">{{element.ContactModel?.MobileNumber}}</span></td>
+                                        </ng-container>
+
+                                        <tr mat-header-row *matHeaderRowDef="displayedColumnsSingleStore; sticky: true"></tr>
+                                        <tr mat-row *matRowDef="let row; columns: displayedColumnsSingleStore"></tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                        </mat-card-content>
+                    </mat-card>
+
+                    <div class="fc la-s-str">
+                        <mat-card class="card f-h-100">
+                            <mat-card-header class="hr-stretch">
+                                <mat-card-title>
+                                    <div class="fr la-sp-btw-c">
+                                        <div class="fr la-s-s">
+                                            <mat-icon class="card-title-icon" svgIcon="contact_person_icon"></mat-icon>
+                                            <h3 class="card-title">CONTACT PERSON</h3>
+                                        </div>
+                                        <ng-container *ngIf="store.Contacts?.length">
+                                            <button mat-icon-button aria-label="icon" (click)="addContactPerson()" matTooltip="Add Contact Person">
+                                      <mat-icon class="material-icons-outlined mdi-24">add</mat-icon>
+                                    </button></ng-container>
+                                    </div>
+                                </mat-card-title>
+                            </mat-card-header>
+                            <mat-card-content>
+
+                                <div>
+                                    <ng-container *ngIf="store.Contacts?.length; else storeContactPersonCard;">
+                                        <div class="mat-card-table">
+                                            <div>
+                                                <table mat-table matSort [dataSource]="dataSourceContacts">
+
+                                                    <!-- Name Column -->
+                                                    <ng-container matColumnDef="Name">
+                                                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+                                                        <td mat-cell *matCellDef="let element"><span class="line-1">{{element.Name}}</span></td>
+                                                    </ng-container>
+
+                                                    <!-- Email Column -->
+                                                    <ng-container matColumnDef="Email">
+                                                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
+                                                        <td mat-cell *matCellDef="let element"><span class="line-1">{{element.Email}}</span></td>
+                                                    </ng-container>
+                                                    <!-- MobileNumber Column -->
+                                                    <ng-container matColumnDef="MobileNumber">
+                                                        <th mat-header-cell *matHeaderCellDef mat-sort-header> MobileNumber </th>
+                                                        <td mat-cell *matCellDef="let element"><span class="line-1">{{element.MobileNumber}}</span></td>
+                                                    </ng-container>
+                                                    <!-- Role Column -->
+                                                    <ng-container matColumnDef="Role">
+                                                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Role </th>
+                                                        <td mat-cell *matCellDef="let element"><span class="line-1">{{element.Role}}</span></td>
+                                                    </ng-container>
+
+                                                    <!-- Actions Column -->
+                                                    <ng-container matColumnDef="Actions">
+                                                        <th mat-header-cell *matHeaderCellDef class="tw-150 align-c"> Actions </th>
+                                                        <td mat-cell *matCellDef="let element" class="tw-150 align-r">
+                                                            <button mat-icon-button aria-label="icon" (click)="viewContact(element)" matTooltip="View">
+    <mat-icon class="material-icons-outlined grid-action-icons">visibility</mat-icon>
+  </button>
+                                                            <button *ngIf="!element.IsMain" mat-icon-button aria-label="icon" (click)="deleteStoreGroupContact(element)" matTooltip="Delete">
+    <mat-icon class="material-icons-outlined grid-action-icons">delete</mat-icon>
+  </button>
+
+                                                            <button mat-icon-button aria-label="icon" (click)="editContact(element)" matTooltip="Edit">
+    <mat-icon class="material-icons-outlined grid-action-icons">edit</mat-icon>
+  </button>
+                                                        </td>
+                                                    </ng-container>
+
+                                                    <tr mat-header-row *matHeaderRowDef="displayedColumnsContacts; sticky: true"></tr>
+                                                    <tr mat-row *matRowDef="let row; columns: displayedColumnsContacts"></tr>
+                                                </table>
+
+                                            </div>
+                                        </div>
+
+
+                                    </ng-container>
+
+                                    <ng-template #storeContactPersonCard>
+
+                                        <div class="fc la-c-c m-tb-2">
+                                            <mat-icon class="mdi-64 m-tb-1" svgIcon="contact_person_placeholder"></mat-icon>
+
+                                            <span class="note m-tb-1">Please add contact person</span>
+
+                                            <button mat-stroked-button color="primary" (click)="addContactPerson()" matTooltip="Add Contact Person">
+                        <mat-icon>add</mat-icon>
+                        ADD
+                      </button>
+                                        </div>
+                                    </ng-template>
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+                </div>
+            </mat-tab>
+
+            <mat-tab label="USERS">
+
+                <div>
+
+                </div>
+
+            </mat-tab>
+
+            <mat-tab label="MENU">
+
+                <div>
+
+                </div>
+
+            </mat-tab>
+
+        </mat-tab-group>
+
+    </div>
+</div>

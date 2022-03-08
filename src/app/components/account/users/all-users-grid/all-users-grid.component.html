@@ -1,0 +1,66 @@
+<div class="mat-card-table">
+
+    <div>
+        <table mat-table matSort [dataSource]="dataSource">
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="Name">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+                <td mat-cell *matCellDef="let element">
+                    <span class="line-1">{{element.Name}}</span>
+                </td>
+            </ng-container>
+
+            <!-- Role Column -->
+            <ng-container matColumnDef="Role">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="tw-150"> Role </th>
+                <td mat-cell *matCellDef="let element" class="tw-150">
+                    <span class="line-1">{{element.Role?.Name}}</span>
+                </td>
+            </ng-container>
+
+            <!-- AssignedStore Column -->
+            <ng-container matColumnDef="AssignedStore">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Assigned Store </th>
+                <td mat-cell *matCellDef="let element">
+                    <ng-container *ngFor="let item of element.Stores;let i = index;">
+                        <span class="line-1">{{item.Name}}</span>
+                        <span *ngIf="i != element.Stores.length - 1">, </span>
+                    </ng-container>
+                </td>
+            </ng-container>
+
+            <!-- Email Column -->
+            <ng-container matColumnDef="Email">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="tw-150"> Email </th>
+                <td mat-cell *matCellDef="let element" class="tw-150">
+                    <span class="line-1">{{element.Email}}</span>
+                </td>
+            </ng-container>
+
+            <!-- Actions Column -->
+            <ng-container matColumnDef="Actions">
+                <th mat-header-cell *matHeaderCellDef class="tw-150 align-c"> Actions </th>
+                <td mat-cell *matCellDef="let element" class="tw-150 align-r">
+                    <button mat-icon-button aria-label="icon" matTooltip="View">
+        <mat-icon class="material-icons-outlined grid-action-icons">visibility</mat-icon>
+      </button>
+                    <button mat-icon-button aria-label="icon" matTooltip="Delete" (click)="deleteUser(element)">
+        <mat-icon class="material-icons-outlined grid-action-icons">delete</mat-icon>
+      </button>
+                    <button mat-icon-button aria-label="icon" matTooltip="Edit">
+        <mat-icon class="material-icons-outlined grid-action-icons">edit</mat-icon>
+      </button>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+
+        <div class="fr la-c-c bg-white">
+            <mat-paginator [pageSize]="20" [pageSizeOptions]="[5, 10, 20, 50, 100, 500]" showFirstLastButtons class="m-auto">
+            </mat-paginator>
+        </div>
+    </div>
+</div>

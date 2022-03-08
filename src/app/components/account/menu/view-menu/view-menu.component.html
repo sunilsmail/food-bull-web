@@ -1,0 +1,108 @@
+<div mat-dialog-header class="mat-dialog-header pos-rel">
+    <h1 mat-dialog-title class="align-c">MENU DETAILS</h1>
+    <button mat-icon-button class="pos-abs top-right-0" (click)="dismiss()"><mat-icon class="mdi-18">close</mat-icon></button>
+</div>
+<div mat-dialog-content>
+    <div class="fc la-s-str">
+        <h4 class="m-tb-05">GENERAL</h4>
+
+        <div class="fr la-s-s">
+            <div class="icon-space"></div>
+            <small class="ft-wt-m">Menu Name</small>
+        </div>
+
+        <div class="fr la-s-s m-b-1">
+            <div class="icon-space">
+                <mat-icon class="material-icons-outlined mdi-18">menu_book</mat-icon>
+            </div>
+            <label>{{ menu.Name }}</label>
+        </div>
+
+
+        <div class="fr la-s-s">
+            <div class="icon-space"></div>
+            <small class="ft-wt-m">Stores</small>
+        </div>
+
+        <div class="fr la-s-s m-b-1">
+            <div class="icon-space">
+                <mat-icon class="material-icons-outlined mdi-18">storefront</mat-icon>
+            </div>
+            <label>{{ menu.Stores.Name }}</label>
+        </div>
+
+        <div class="fr la-s-s">
+            <div class="icon-space"></div>
+            <small class="ft-wt-m">Description</small>
+        </div>
+
+        <div class="fr la-s-s m-b-1">
+            <div class="icon-space">
+                <mat-icon class="material-icons-outlined mdi-18">short_text</mat-icon>
+            </div>
+            <label>{{ menu.Description }}</label>
+        </div>
+
+        <h4 class="m-tb-05">ADVANCE</h4>
+
+        <div class="fr la-s-s">
+            <div class="icon-space"></div>
+            <small class="ft-wt-m">Hide Menu</small>
+        </div>
+
+        <div class="fr la-s-s m-b-1">
+            <div class="icon-space">
+                <mat-icon class="material-icons-outlined mdi-18">visibility</mat-icon>
+            </div>
+            <label>{{ menu.IsHideMenu ? 'YES' : 'NO' }}</label>
+        </div>
+
+        <div class="fr la-s-s">
+            <div class="icon-space"></div>
+            <small class="ft-wt-m">Available Services</small>
+        </div>
+
+        <div class="fr la-s-s m-b-1">
+            <div class="icon-space">
+                <mat-icon class="material-icons-outlined mdi-18">room_service</mat-icon>
+            </div>
+            <div class="fr-w la-s-s">
+                <ng-container *ngFor="let service of menu.Services;index as sIndex;">
+                    <label> {{ service.Name }}{{ menu.Services.length - 1 == sIndex ? "." : ",&nbsp;" }}</label>
+                </ng-container>
+            </div>
+        </div>
+
+        <div class="fr la-s-s">
+            <div class="icon-space"></div>
+            <small class="ft-wt-m">Available Hours</small>
+        </div>
+
+        <div class="fr la-s-s m-b-1">
+            <div class="icon-space">
+                <mat-icon class="material-icons-outlined mdi-18">timer</mat-icon>
+            </div>
+            <ng-container *ngIf="menu.Timings?.length; else noTimingCard;">
+                <table class="table table-striped">
+                    <tbody>
+                        <tr *ngFor="let sTiming of menu.Timings; let sIndex = index;">
+                            <td>{{ weekDays[sIndex] }}</td>
+                            <td>
+                                <ng-container *ngIf="sTiming.IsAllDayOpen;else closedTemplate">
+                                    {{ sTiming.OpenHrs | date: 'HH:mm' }} - {{ sTiming.CloseHrs | date: 'HH:mm' }}
+                                    <label *ngIf="sTiming.IsNextDay" class="stroke-label-success">+1 Day</label>
+                                </ng-container>
+                                <ng-template #closedTemplate>Closed</ng-template>
+                            </td>
+                    </tbody>
+                </table>
+            </ng-container>
+            <ng-template #noTimingCard>
+                <div class="fc la-c-c m-tb-2">
+                    <mat-icon class="mdi-64 m-tb-1" svgIcon="timer_placeholder"></mat-icon>
+                    <span class="note m-tb-1">You haven't updated store timings yet, please add</span>
+                </div>
+            </ng-template>
+        </div>
+    </div>
+</div>

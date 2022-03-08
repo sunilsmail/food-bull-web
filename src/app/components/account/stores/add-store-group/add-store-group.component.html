@@ -1,0 +1,138 @@
+<form autocomplete="off" [formGroup]="fg" class="fc la-s-str">
+    <div mat-dialog-header class="mat-dialog-header pos-rel">
+        <h1 mat-dialog-title class="align-c">{{title}}</h1>
+        <button mat-icon-button class="pos-abs top-right-0" (click)="dismiss()">
+          <mat-icon class="mdi-18">close</mat-icon>
+        </button>
+    </div>
+    <div mat-dialog-content>
+        <div class="fc la-s-str">
+
+            <mat-form-field appearance="outline">
+                <mat-label>Group Name</mat-label>
+                <input matInput required [(ngModel)]="storeGroup.Name" formControlName="NameCtrl" placeholder="(e.g. franchise)">
+                <mat-error *ngIf="fg.get('NameCtrl')?.hasError('required')">Group name is required</mat-error>
+                <mat-error *ngIf="fg.get('NameCtrl')?.hasError('minlength')">Min. 3 characters required</mat-error>
+                <mat-error *ngIf="fg.get('NameCtrl')?.hasError('maxlength')">Max. 100 characters allowed</mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="example-chip-list" appearance="outline">
+                <mat-label>Assign Stores</mat-label>
+                <mat-chip-list #chipList aria-label="stores">
+                    <mat-chip *ngFor="let store of selectedStores;let i = index;" [selectable]="selectable" [removable]="removable" (removed)="remove(store, i)">
+                        {{store.Name}}
+                        <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                    </mat-chip>
+                    <input placeholder="store..." #storeInput [(ngModel)]="storeGroup.Stores" formControlName="StoreCtrl" [matAutocomplete]="auto" [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="add($event)">
+                </mat-chip-list>
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText" (optionSelected)="selected($event)">
+                    <mat-option *ngFor="let store of filteredStores | async" [value]="store">
+                        {{store.Name}}
+                    </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+
+
+            <h4>STORE GROUP HEAD OFFICE</h4>
+
+
+            <div class="f-gt-sm-r la-gt-sm-sp-btw-c f-lt-md-c la-lt-md-s-str">
+                <div class="f-gt-sm-30 f-lt-md-100">
+                    <mat-form-field class="w-100" appearance="outline">
+                        <mat-label>Door No.</mat-label>
+                        <input matInput [(ngModel)]="storeGroup.LocationModel.DoorNo" formControlName="DoorNoCtrl">
+                        <mat-error *ngIf="fg.get('DoorNoCtrl')?.hasError('maxlength')">Max. 16 characters</mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="f-gt-sm-65 f-lt-md-100">
+                    <mat-form-field class="w-100" appearance="outline">
+                        <mat-label>Address Line 1</mat-label>
+                        <input matInput required [(ngModel)]="storeGroup.LocationModel.Address1" formControlName="Address1Ctrl">
+                        <mat-error *ngIf="fg.get('Address1Ctrl')?.hasError('required')">Address Line 1 is required</mat-error>
+                        <mat-error *ngIf="fg.get('Address1Ctrl')?.hasError('maxlength')">Too long. Max 500 characters</mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <mat-form-field class="f-w-100" appearance="outline">
+                <mat-label>Address Line (Optional)</mat-label>
+                <input matInput [(ngModel)]="storeGroup.LocationModel.Address2" formControlName="Address2Ctrl">
+                <mat-error *ngIf="fg.get('Address2Ctrl')?.hasError('maxlength')">Too long. Max 256 characters</mat-error>
+            </mat-form-field>
+
+            <div class="f-gt-sm-r la-gt-sm-sp-btw-c f-lt-md-c la-lt-md-s-str">
+                <div class="f-gt-sm-65 f-lt-md-100">
+                    <mat-form-field class="w-100" appearance="outline">
+                        <mat-label>Town/City</mat-label>
+                        <input type="text" aria-label="Number" matInput [(ngModel)]="storeGroup.LocationModel.City" formControlName="CityCtrl" [matAutocomplete]="cityAutocomplete">
+                        <mat-autocomplete #cityAutocomplete="matAutocomplete" [displayWith]="getOptionText">
+                            <mat-option *ngFor="let option of cityOptions | async" [value]="option">{{option.Name}}</mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                </div>
+                <div class="f-gt-sm-30 f-lt-md-100">
+                    <mat-form-field class="w-100" appearance="outline">
+                        <mat-label>Post Code</mat-label>
+                        <input matInput class="textarea" [(ngModel)]="storeGroup.LocationModel.ZipCode" formControlName="ZipCodeCtrl">
+                        <mat-error *ngIf="fg.get('ZipCodeCtrl')?.hasError('pattern')">Invalid pattern</mat-error>
+                        <mat-hint *ngIf="!fg.get('ZipCodeCtrl')?.hasError('pattern')">eg: SW1W 0NY, PO16 7GZ, GU16 7HF, L1 8JQ</mat-hint>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <mat-form-field class="w-100" appearance="outline">
+                <mat-label>Head Office Phone Number</mat-label>
+                <input matInput [(ngModel)]="storeGroup.ContactModel.MobileNumber" formControlName="PhoneNumberCtrl">
+                <mat-error *ngIf="fg.get('PhoneNumberCtrl')?.hasError('pattern')">Invalid number</mat-error>
+                <mat-hint *ngIf="!fg.get('PhoneNumberCtrl')?.hasError('pattern')">eg: +44 20 1234 5678</mat-hint>
+            </mat-form-field>
+
+            <mat-form-field class="w-100" appearance="outline">
+                <mat-label>Store Email Address</mat-label>
+                <input matInput class="textarea" [(ngModel)]="storeGroup.ContactModel.Email" formControlName="EmailAddressCtrl">
+                <mat-error *ngIf="fg.get('EmailAddressCtrl')?.hasError('pattern')">
+                    Invalid Email
+                </mat-error>
+            </mat-form-field>
+            <foodbull-image-upload [title]="'UPLOAD LOGO'" [subTitle]="'Image dimension 150 x 150 | Size: 500kb | Format: jpeg and png only)'" [isRequired]="true" [isMultiple]="false" (onSelectionChange)="fileSelectionChange($event)" [image]="storeGroup.Logo" (delete)="fileDeleteImage($event)"></foodbull-image-upload>
+
+            <!--
+            <ng-container *ngIf="storeGroup.Logo?.IMGID;else uploadTemplate;">
+                <div class="fr la-s-s m-b-1">
+                    <div class="img-thumbnail fc la-s-str">
+                        <img [src]="storeGroup.Logo?.ImageUrl" alt="image.png" class="img-fit-128">
+                        <button mat-icon-button color="warn" (click)="deleteStoreGroupImage(storeGroup.Logo.Id)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+                    </div>
+                </div>
+            </ng-container>
+            <ng-template #uploadTemplate>
+            </ng-template> -->
+
+        </div>
+    </div>
+    <div mat-dialog-actions>
+        <div class="fc la-s-str">
+            <button *ngIf="!isEdit" type="submit" mat-raised-button color="primary" class="m-lr-05" (click)="submit(fg)">
+            <ng-container [ngSwitch]="isSubmitted">
+              <div *ngSwitchCase="true" class="submitted fr la-c-c">
+                Please wait
+                <div class="loader"></div>
+              </div>
+              <div *ngSwitchDefault>SAVE</div>
+            </ng-container>
+          </button>
+            <button *ngIf="isEdit" type="submit" mat-raised-button color="primary" class="m-lr-05" (click)="update(fg)">
+          <ng-container [ngSwitch]="isSubmitted">
+            <div *ngSwitchCase="true" class="submitted fr la-c-c">
+              Please wait
+              <div class="loader"></div>
+            </div>
+            <div *ngSwitchDefault>UPDATE</div>
+          </ng-container>
+        </button>
+        </div>
+    </div>
+</form>

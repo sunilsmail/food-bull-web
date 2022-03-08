@@ -1,0 +1,48 @@
+<div class="login-container">
+    <div class="fc la-c-c f-h-100">
+        <div class="login-wrapper">
+            <div class="fc la-c-c m-tb-2">
+                <mat-icon svgIcon="logo" class="logo-lg" matTooltip="foodbull"></mat-icon>
+            </div>
+            <mat-card class="login-card f-100">
+                <mat-card-content>
+                    <div class="fc la-s-str">
+
+                        <h2 class="align-c ft-wt-m m0">LOGIN</h2>
+                        <form class="p-tb-05 fc la-c-str" autocomplete="off" [formGroup]="fg" (ngSubmit)="authenticate(fg)">
+
+
+                            <mat-form-field appearance="outline" class="input-pre-icon">
+                                <mat-label>Email Address</mat-label>
+                                <mat-icon class="material-icons-outlined" matPrefix>email</mat-icon>
+                                <input matInput [(ngModel)]="cred.EmailAddress" formControlName="username" type="email">
+                                <mat-error *ngIf="fg.get('username')?.hasError('required')">Email is required</mat-error>
+                                <mat-error *ngIf="fg.get('username')?.hasError('email')">Invalid email address</mat-error>
+                                <mat-error *ngIf="fg.get('username')?.errors?.serverError">{{fg.get('username')?.errors?.serverError}}</mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" class="input-pre-icon">
+                                <mat-label>Password</mat-label>
+                                <mat-icon class="material-icons-outlined" matPrefix>lock</mat-icon>
+
+                                <input matInput [(ngModel)]="cred.Password" formControlName="password" [type]="hide ? 'password' : 'text'">
+                                <button type="button" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide"><mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon></button>
+                                <mat-error *ngIf="fg.get('password')?.hasError('required')">Password is required</mat-error>
+                                <mat-error *ngIf="fg.get('password')?.hasError('pattern')">Invalid pattern</mat-error>
+                                <mat-error *ngIf="fg.get('password')?.errors?.serverError">{{fg.get('password')?.errors?.serverError}}</mat-error>
+                            </mat-form-field>
+
+                            <button type="submit" mat-raised-button color="primary" class="button-lg ft-wt-b m-t-1"><ng-container [ngSwitch]="isSubmitted"><div *ngSwitchCase="true" class="submitted fr la-c-c"><div class="loader"></div></div><div *ngSwitchDefault>Login</div></ng-container></button>
+
+                            <div class="fr la-sp-btw-c mat-form-field-container p-tb-05">
+                                <mat-checkbox [(ngModel)]="cred.RememberMe" formControlName="rememberMe">Remember</mat-checkbox>
+
+                                <a type="button" mat-button class="btn-anchor primary" [routerLink]="['/forgot-password']">Forgot password?</a>
+                            </div>
+                        </form>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
+</div>

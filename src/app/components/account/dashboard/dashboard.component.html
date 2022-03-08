@@ -1,0 +1,51 @@
+<section class="row-gap">
+    <div class="fc la-s-str">
+        <div class="f-gt-sm-rw la-gt-sm-s-s f-lt-md-c la-lt-md-s-str">
+
+            <!-- STORES -->
+            <div class="thumb-card-s fr la-s-s f-gt-md-25 f-gt-sm-30 f-lt-md-100">
+                <div>
+                    <mat-icon class="material-icons-outlined">storefront</mat-icon>
+                </div>
+                <div class="fc la-s-str">
+                    <label class="title">STORES</label>
+                    <small class="sub-title">Number of Stores</small>
+                </div>
+                <div>
+                    <label class="title-lg-primary">{{ dashboardCountModel.StoresCount }}</label>
+                </div>
+            </div>
+
+            <!-- STORE GROUPS -->
+            <div class="thumb-card-s fr la-s-s f-gt-md-25 f-gt-sm-30 f-lt-md-100">
+                <div>
+                    <mat-icon class="material-icons-outlined">business</mat-icon>
+                </div>
+                <div class="fc la-s-str">
+                    <label class="title">STORE GROUPS</label>
+                    <small class="sub-title">Number of Groups</small>
+                    <small class="sub-title">Linked stores {{ dashboardCountModel.LinikedStoresCount }}</small>
+
+                </div>
+                <div>
+                    <label class="title-lg-primary">{{ dashboardCountModel.StoreGroupCount }}</label>
+                </div>
+            </div>
+
+            <!-- SYSTEM USERS -->
+            <div class="thumb-card-s fr la-s-s f-gt-md-25 f-gt-sm-30 f-lt-md-100">
+                <div>
+                    <mat-icon class="material-icons-outlined">people</mat-icon>
+                </div>
+                <div class="fc la-s-str">
+                    <label class="title">SYSTEM USERS</label>
+                    <small class="sub-title">Number of Users</small>
+                </div>
+                <div>
+                    <label class="title-lg-primary">{{ dashboardCountModel.UserCount }}</label>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>

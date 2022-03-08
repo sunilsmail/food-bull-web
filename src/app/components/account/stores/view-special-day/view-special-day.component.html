@@ -1,0 +1,62 @@
+<div mat-dialog-header class="mat-dialog-header pos-rel">
+    <h1 mat-dialog-title class="align-c">VIEW SPECIAL DAY</h1>
+    <button mat-icon-button class="pos-abs top-right-0" (click)="dismiss()"><mat-icon class="mdi-18">close</mat-icon></button>
+</div>
+<div mat-dialog-content>
+    <div class="fc la-s-str">
+
+        <div class="fr la-s-s">
+            <div class="icon-space"></div>
+            <small class="ft-wt-m">Date</small>
+        </div>
+
+        <div class="fr la-s-s m-b-1">
+            <div class="icon-space">
+                <mat-icon class="material-icons-outlined mdi-18">today</mat-icon>
+            </div>
+            <label>{{ specialDay.FromDate | date: 'dd-MM-yyyy' }} <ng-container *ngIf="specialDay.ToDate != specialDay.FromDate"> to {{specialDay.ToDate | date: 'dd-MM-yyyy'}}</ng-container></label>
+        </div>
+
+
+        <div class="fr la-s-s">
+            <div class="icon-space"></div>
+            <small class="ft-wt-m">Open Hrs - Close Hrs</small>
+        </div>
+
+        <div class="fr la-s-s m-b-1">
+            <div class="icon-space">
+                <mat-icon class="material-icons-outlined mdi-18">schedule</mat-icon>
+            </div>
+            <ng-container *ngIf="specialDay.OpenHrs && specialDay.CloseHrs; else closedTemplate;">
+                <label>{{ specialDay.OpenHrs | date: 'HH:mm' }} - {{ specialDay.CloseHrs | date: 'HH:mm' }}</label></ng-container>
+            <ng-template #closedTemplate>Closed</ng-template>
+        </div>
+
+        <div class="fr la-s-s">
+            <div class="icon-space"></div>
+            <small class="ft-wt-m">Open / Closed</small>
+        </div>
+
+        <div class="fr la-s-s m-b-1">
+            <div class="icon-space">
+                <mat-icon class="material-icons-outlined mdi-18">lock_open</mat-icon>
+            </div>
+            <label>{{ specialDay.IsAllDayOpen ? 'Open' : 'Closed' }}</label>
+        </div>
+
+
+        <div class="fr la-s-s">
+            <div class="icon-space"></div>
+            <small class="ft-wt-m">Description</small>
+        </div>
+
+        <div class="fr la-s-s m-b-1">
+            <div class="icon-space">
+                <mat-icon class="material-icons-outlined mdi-18">short_text</mat-icon>
+            </div>
+            <label>{{ specialDay.Description }}</label>
+        </div>
+
+
+    </div>
+</div>

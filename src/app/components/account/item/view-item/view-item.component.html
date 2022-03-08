@@ -1,0 +1,87 @@
+<div mat-dialog-header class="mat-dialog-header pos-rel">
+    <h1 mat-dialog-title class="align-c">ITEM DETAILS</h1>
+    <button mat-icon-button class="pos-abs top-right-0" (click)="dismiss()"><mat-icon class="mdi-18">close</mat-icon></button>
+</div>
+<div mat-dialog-content>
+    <div class="fc la-s-str">
+
+        <div class="fr la-s-s">
+            <ul class="ul-hor-img-scroller">
+                <li *ngFor="let image of item.Images;">
+                    <img [src]="image.ImageUrl" class="img-fit-cover mdi-128 m-05">
+                </li>
+            </ul>
+
+        </div>
+
+        <div class="fr la-s-s">
+            <div class="icon-space"></div>
+            <small class="ft-wt-m">Item Name</small>
+        </div>
+
+        <div class="fr la-s-s m-b-1">
+            <div class="icon-space">
+                <mat-icon class="material-icons-outlined mdi-18">menu_book</mat-icon>
+            </div>
+            <label>{{ item.Name }}</label>
+        </div>
+
+
+        <div class="fr la-s-s">
+            <div class="icon-space"></div>
+            <small class="ft-wt-m">Price</small>
+        </div>
+
+        <div class="fr la-s-s m-b-1">
+            <div class="icon-space">
+                <mat-icon class="material-icons-outlined mdi-18">attach_money</mat-icon>
+            </div>
+            <label>{{ item.Price | currency }}</label>
+        </div>
+
+        <div class="fr la-s-s">
+            <div class="icon-space"></div>
+            <small class="ft-wt-m">Description</small>
+        </div>
+
+        <div class="fr la-s-s m-b-1">
+            <div class="icon-space">
+                <mat-icon class="material-icons-outlined mdi-18">short_text</mat-icon>
+            </div>
+            <label>{{ item.Description }}</label>
+        </div>
+
+
+        <div class="fr la-s-s">
+            <div class="icon-space"></div>
+            <small class="ft-wt-m">Availability</small>
+        </div>
+
+        <div class="fr la-s-s m-b-1">
+            <div class="icon-space">
+                <mat-icon class="material-icons-outlined mdi-18">short_text</mat-icon>
+            </div>
+            <mat-icon ngClass="{{ item.IsDefault ? 'red' : 'grey' }}">{{ item.IsDefault ? 'toggle_on' : 'toggle_off'}}</mat-icon>
+        </div>
+
+        <div class="fr la-s-s">
+            <div class="icon-space"></div>
+            <small class="ft-wt-m">UOM</small>
+        </div>
+
+        <div class="fr la-s-s m-b-1">
+            <div class="icon-space">
+                <mat-icon class="material-icons-outlined mdi-18">short_text</mat-icon>
+            </div>
+
+            <ul>
+                <li *ngFor="let uom of item.UOMModels;" class="fr la-s-c">
+                    <label> <b>{{uom.Name}}</b> &nbsp;-&nbsp; </label>
+                    <small class="ft-wt-m">{{ uom.Price }}</small>
+                    <mat-icon *ngIf="uom.IsDefault" class="green mdi-18 m-lr-05" matTooltip="Default Price">check_circle</mat-icon>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+</div>

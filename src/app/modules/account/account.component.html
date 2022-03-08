@@ -1,0 +1,81 @@
+<mat-toolbar #navBar class="nav-bar">
+    <mat-toolbar-row>
+        <a [routerLink]="['/account/dashboard']">
+            <mat-icon svgIcon="logo-nav" class="logo-md"></mat-icon>
+        </a>
+
+        <div class="f-auto"></div>
+
+        <button mat-icon-button>
+        <mat-icon class="material-icons-outlined" matBadge="5" matBadgeColor="warn">notifications</mat-icon>
+      </button>
+
+        <button mat-button [matMenuTriggerFor]="menu">
+        <mat-icon>perm_identity</mat-icon>
+      </button>
+        <mat-menu #menu="matMenu">
+            <div class="fr la-s-s mat-menu-header m-tb-05 m-r-1">
+                <img class="image" src="https://picsum.photos/id/237/30/30" />
+                <div class="fc la-s-str">
+                    <label class="ft-wt-r ft-s-d">{{ userInfo.Name }}</label>
+                    <small class="ft-wt-r ft-s-s note">{{ userInfo.RoleName }}</small>
+                </div>
+            </div>
+            <mat-divider></mat-divider>
+            <button mat-menu-item><mat-icon class="material-icons-outlined">settings</mat-icon>Settings</button>
+            <button mat-menu-item (click)="logout()"><mat-icon>logout</mat-icon>Logout</button>
+        </mat-menu>
+    </mat-toolbar-row>
+</mat-toolbar>
+
+<mat-sidenav-container class="sidenav-container">
+    <mat-sidenav #snav mode="side" opened class="sidenav">
+        <div class="f-gt-sm-c la-gt-sm-c-c f-lt-md-r la-lt-md-sp-ar-c">
+            <button mat-button class="menu-button" [routerLink]="['/account/dashboard']" [routerLinkActive]="['active']">
+              <div class="fc la-c-c">
+                  <mat-icon class="material-icons-outlined">home</mat-icon>
+                  <span>Home</span>
+                </div>
+            </button>
+
+            <button mat-button class="menu-button" [routerLink]="['/account/stores']" [routerLinkActive]="['active']">
+              <div class="fc la-c-c">
+                  <mat-icon class="material-icons-outlined">storefront</mat-icon>
+                  <span>Store</span>
+              </div>
+            </button>
+
+            <ng-container *ngIf="isSuperAdmin">
+                <button mat-button class="menu-button" [routerLink]="['/account/menu']" [routerLinkActive]="['active']">
+                <div class="fc la-c-c">
+                    <mat-icon class="material-icons-outlined">restaurant_menu</mat-icon>
+                    <span>Menu</span>
+                </div>
+              </button>
+            </ng-container>
+
+            <button mat-button class="menu-button" [routerLink]="['/account/users']" [routerLinkActive]="['active']">
+              <div class="fc la-c-c">
+                  <mat-icon class="material-icons-outlined">perm_identity</mat-icon>
+                  <span>Users</span>
+              </div>
+            </button>
+
+            <ng-container *ngIf="isSuperAdmin">
+                <button mat-button class="menu-button" [routerLink]="['/account/modules']" [routerLinkActive]="['active']">
+                <div class="fc la-c-c">
+                    <mat-icon class="material-icons-outlined">grid_view</mat-icon>
+                    <span>Modules</span>
+                </div>
+              </button>
+            </ng-container>
+        </div>
+    </mat-sidenav>
+    <mat-sidenav-content>
+        <div class="page-wrapper">
+            <div>
+                <router-outlet></router-outlet>
+            </div>
+        </div>
+    </mat-sidenav-content>
+</mat-sidenav-container>

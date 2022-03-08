@@ -1,0 +1,22 @@
+<div class="fc la-s-str m-b-2">
+    <ul id="breadcrumb">
+        <li>
+            <a [routerLink]="['/account/modules']">
+                <mat-icon class="material-icons-outlined mdi-18 m-r-05">grid_view</mat-icon>
+                Modules
+            </a>
+        </li>
+        <!-- <li><a href="javascript:void(0)"> Modules</a></li> -->
+    </ul>
+
+    <div>
+        <mat-tab-group dynamicHeight animationDuration="0ms" (selectedTabChange)="selectedTabChange($event)" class="c-tabs">
+            <mat-tab label="Services">
+                <foodbull-master-services-view></foodbull-master-services-view>
+            </mat-tab>
+            <mat-tab label="Allergens & Tags">
+                <foodbull-allergens-tags-view></foodbull-allergens-tags-view>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+</div>

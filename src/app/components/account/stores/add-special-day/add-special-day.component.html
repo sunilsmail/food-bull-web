@@ -1,0 +1,97 @@
+<form autocomplete="off" [formGroup]="fg" class="fc la-s-str">
+    <div mat-dialog-header class="mat-dialog-header pos-rel">
+        <h1 mat-dialog-title class="align-c">{{title}}</h1>
+        <button mat-icon-button class="pos-abs top-right-0" (click)="dismiss()">
+      <mat-icon class="mdi-18">close</mat-icon>
+    </button>
+    </div>
+    <div mat-dialog-content>
+        <div class="fc la-s-str">
+
+            <div class="f-gt-sm-r la-gt-sm-sp-btw-c f-lt-md-c la-lt-md-s-str">
+                <mat-form-field class="f-gt-sm-50 f-lt-md-100" appearance="outline">
+                    <mat-label>Enter date range</mat-label>
+                    <mat-date-range-input [formGroup]="fg" [rangePicker]="dateRangePicker" [comparisonStart]="fg.value.FromDateCtrl" [comparisonEnd]="fg.value.ToDateCtrl">
+                        <input matStartDate placeholder="From date" formControlName="FromDateCtrl" required>
+                        <input matEndDate placeholder="To date" formControlName="ToDateCtrl" required>
+                    </mat-date-range-input>
+                    <mat-datepicker-toggle matSuffix [for]="dateRangePicker"></mat-datepicker-toggle>
+                    <mat-date-range-picker #dateRangePicker></mat-date-range-picker>
+                    <mat-error *ngIf="fg.get('FromDateCtrl')?.hasError('required')">From date is required</mat-error>
+                    <mat-error *ngIf="fg.get('ToDateCtrl')?.hasError('required')">To date is required</mat-error>
+                </mat-form-field>
+
+                <div class="fc la-c-str f-gt-sm-45 f-lt-md-100 p-lr-1">
+                    <div class="fr la-sp-btw-c m-b-1">
+                        <label>{{specialDay.IsAllDayOpen == true ? 'Open' : 'Closed'}}</label>
+                        <mat-slide-toggle color="primary" [(ngModel)]="specialDay.IsAllDayOpen" formControlName="IsAllDayOpenCtrl"></mat-slide-toggle>
+                    </div>
+                </div>
+
+            </div>
+
+            <ng-container *ngIf="specialDay.IsAllDayOpen;">
+
+                <div class="f-gt-sm-r la-gt-sm-sp-btw-s f-lt-md-c la-lt-md-s-str">
+                    <mat-form-field appearance="outline" class="f-gt-sm-50 f-lt-md-100 input-pre-icon">
+
+                        <mat-label>Opening Hours</mat-label>
+                        <mat-icon class="material-icons-outlined" matPrefix>schedule</mat-icon>
+
+                        <mat-select formControlName="OpenHrsCtrl" [(ngModel)]="specialDay.OpenHrs" [compareWith]="objectComparisonFunction">
+                            <mat-option disabled>Opening Hours</mat-option>
+                            <mat-option *ngFor="let item of lstTime;" [value]="item">{{item | date: 'HH:mm'}}</mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="fg.get('OpenHrsCtrl')?.hasError('required')">This field is required</mat-error>
+
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="f-gt-sm-45 f-lt-md-100 input-pre-icon">
+                        <mat-label>Closing Hours</mat-label>
+                        <mat-icon class="material-icons-outlined" matPrefix>schedule</mat-icon>
+
+                        <mat-select formControlName="CloseHrsCtrl" [(ngModel)]="specialDay.CloseHrs" [compareWith]="objectComparisonFunction">
+                            <mat-option disabled>Closing Hours</mat-option>
+                            <mat-option *ngFor="let item of lstTime;" [value]="item">{{item | date: 'HH:mm'}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="fg.get('CloseHrsCtrl')?.hasError('required')">This field is required</mat-error>
+                    </mat-form-field>
+
+                </div>
+            </ng-container>
+
+            <mat-form-field class="flex-w-100" appearance="outline">
+                <mat-label>Description</mat-label>
+                <input matInput placeholder="Description" [(ngModel)]="specialDay.Description" formControlName="DescriptionCtrl">
+                <mat-error *ngIf="fg.get('DescriptionCtrl')?.hasError('maxlength')">Too long. Max 50 characters</mat-error>
+            </mat-form-field>
+
+        </div>
+    </div>
+    <div mat-dialog-actions>
+        <div class="fc la-s-str">
+
+            <button *ngIf="!isEdit" type="submit" mat-raised-button color="primary" class="m-lr-05" (click)="submit(fg)">
+      <ng-container [ngSwitch]="isSubmitted">
+        <div *ngSwitchCase="true" class="submitted fr la-c-c">
+          Please wait
+          <div class="loader"></div>
+        </div>
+        <div *ngSwitchDefault>SAVE</div>
+      </ng-container>
+    </button>
+
+            <button *ngIf="isEdit" type="submit" mat-raised-button color="primary" class="m-lr-05" (click)="update(fg)">
+      <ng-container [ngSwitch]="isSubmitted">
+        <div *ngSwitchCase="true" class="submitted fr la-c-c">
+          Please wait
+          <div class="loader"></div>
+        </div>
+        <div *ngSwitchDefault>UPDATE</div>
+      </ng-container>
+    </button>
+
+        </div>
+    </div>
+</form>
